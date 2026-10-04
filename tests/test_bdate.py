@@ -1,0 +1,67 @@
+import unittest
+from datetime import datetime, timezone
+
+import bdate
+
+
+class CalendarTests(unittest.TestCase):
+    def test_gregorian_reform_day(self):
+        # 15 Oct 1582 (Gregorian) == 5 Oct 1582 (Julian)
+        self.assertEqual(bdate.gregorian_to_julian(1582, 10, 15), (1582, 10, 5))
+
+    def test_modern_offset_is_13_days(self):
+        self.assertEqual(bdate.gregorian_to_julian(2026, 10, 4), (2026, 9, 21))
+        self.assertEqual(bdate.gregorian_to_julian(2026, 1, 10), (2025, 12, 28))
+
+    def test_fall_of_constantinople(self):
+        # 29 May 1453: Julian == Gregorian-proleptic minus 10 days; AM 6961; indiction 1; a Tuesday.
+        jdn = bdate.gregorian_to_jdn(1453, 6, 7)  # 7 June 1453 proleptic Gregorian
+        self.assertEqual(bdate.jdn_to_julian(jdn), (1453, 5, 29))
+        am = bdate.anno_mundi(1453, 5)
+        self.assertEqual(am, 6961)
+        self.assertEqual(bdate.indiction(am), 1)
+        self.assertEqual(bdate.WEEKDAYS[bdate.weekday_index(jdn)], "Tritē")
+
+    def test_year_boundary_on_1_september(self):
+        self.assertEqual(bdate.anno_mundi(2026, 8), 7534)
+        self.assertEqual(bdate.anno_mundi(2026, 9), 7535)
+
+    def test_indiction_wraps_to_15(self):
+        self.assertEqual(bdate.indiction(15), 15)
+        self.assertEqual(bdate.indiction(30), 15)
+        self.assertEqual(bdate.indiction(16), 1)
+
+    def test_weekday_known_sunday(self):
+        # 4 Oct 2026 is a Sunday
+        self.assertEqual(bdate.WEEKDAYS[bdate.weekday_index(bdate.gregorian_to_jdn(2026, 10, 4))], "Kyriakē")
+
+
+class SeasonalHourTests(unittest.TestCase):
+    def test_noon_in_constantinople_is_daytime(self):
+        now = datetime(2026, 6, 21, 10, 0, tzinfo=timezone.utc)  # 13:00 local (UTC+3)
+        s = bdate.seasonal_hour(now, bdate.DEFAULT_LAT, bdate.DEFAULT_LON)
+        self.assertIsNotNone(s)
+        self.assertEqual(s.period, "day")
+        self.assertTrue(5 <= s.hour <= 8)
+
+    def test_midnight_in_constantinople_is_night(self):
+        now = datetime(2026, 6, 21, 21, 0, tzinfo=timezone.utc)  # 00:00 local
+        s = bdate.seasonal_hour(now, bdate.DEFAULT_LAT, bdate.DEFAULT_LON)
+        self.assertEqual(s.period, "night")
+        self.assertIn(s.watch, (2, 3))
+
+    def test_polar_night_returns_none(self):
+        now = datetime(2026, 12, 21, 12, 0, tzinfo=timezone.utc)
+        self.assertIsNone(bdate.seasonal_hour(now, 80.0, 0.0))
+
+
+class CliTests(unittest.TestCase):
+    def test_main_runs(self):
+        self.assertEqual(bdate.main(["-d", "1453-05-29T12:00+02:00", "--no-hours"]), 0)
+
+    def test_bad_date(self):
+        self.assertEqual(bdate.main(["-d", "nonsense"]), 1)
+
+
+if __name__ == "__main__":
+    unittest.main()
