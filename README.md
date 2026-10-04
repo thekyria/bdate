@@ -33,15 +33,19 @@ bdate --json
 
 ## Install / run
 
-Stdlib only, Python ≥ 3.9.
+Stdlib only, Python ≥ 3.9. Packaged with [uv](https://docs.astral.sh/uv/).
 
 ```
-python3 bdate.py
-# or
-pip install .   && bdate
+uv tool install .           # install the `bdate` command globally
+uvx --from . bdate          # run without installing
+uv run bdate                # run from a checkout
+uv run python -m bdate      # same, as a module
+pip install .   && bdate    # plain pip still works
 ```
 
-Tests: `python3 -m unittest discover -s tests`
+Tests: `uv run pytest`
+
+Build sdist/wheel: `uv build`
 
 ## Caveats (honest ones)
 

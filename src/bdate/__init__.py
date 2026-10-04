@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """bdate - print the date and time the way a Byzantine would have reckoned it.
 
 Layers implemented:
@@ -278,6 +277,3 @@ def main(argv=None) -> int:
         print(format_default(b))
     return 0
 
-
-if __name__ == "__main__":
-    sys.exit(main())
