@@ -1,5 +1,8 @@
+import io
+import json
 import unittest
-from datetime import datetime, timezone
+from contextlib import redirect_stdout, redirect_stderr
+from datetime import datetime, timedelta, timezone
 
 import bdate
 
@@ -55,12 +58,144 @@ class SeasonalHourTests(unittest.TestCase):
         self.assertIsNone(bdate.seasonal_hour(now, 80.0, 0.0))
 
 
+    def test_sun_events_are_ordered_and_tz_aware(self):
+        d = datetime(2026, 6, 21, tzinfo=timezone.utc).date()
+        rise, sset = bdate.sun_events(d, bdate.DEFAULT_LAT, bdate.DEFAULT_LON)
+        self.assertIsNotNone(rise)
+        self.assertIsNotNone(sset)
+        self.assertEqual(rise.tzinfo, timezone.utc)
+        self.assertEqual(sset.tzinfo, timezone.utc)
+        self.assertLess(rise, sset)
+
+    def test_hour_is_between_1_and_12(self):
+        start = datetime(2026, 3, 20, 0, 0, tzinfo=timezone.utc)
+        for offset in range(0, 24):
+            s = bdate.seasonal_hour(start + timedelta(hours=offset),
+                                    bdate.DEFAULT_LAT, bdate.DEFAULT_LON)
+            self.assertIsNotNone(s)
+            self.assertIn(s.period, ("day", "night"))
+            self.assertTrue(1 <= s.hour <= 12)
+            if s.period == "night":
+                self.assertTrue(1 <= s.watch <= 4)
+            else:
+                self.assertIsNone(s.watch)
+
+
+class AssemblyTests(unittest.TestCase):
+    def test_byzantine_without_hours(self):
+        now = datetime(1453, 6, 7, 12, 0, tzinfo=timezone.utc)
+        b = bdate.byzantine(now, bdate.DEFAULT_LAT, bdate.DEFAULT_LON, with_hours=False)
+        self.assertEqual((b.julian_year, b.julian_month, b.julian_day), (1453, 5, 29))
+        self.assertEqual(b.month_name, "Maios")
+        self.assertEqual(b.weekday, "Tritē")
+        self.assertEqual(b.anno_mundi, 6961)
+        self.assertEqual(b.indiction, 1)
+        self.assertIsNone(b.seasonal)
+
+    def test_ordinal(self):
+        self.assertEqual(bdate._ordinal(1), "1st")
+        self.assertEqual(bdate._ordinal(2), "2nd")
+        self.assertEqual(bdate._ordinal(3), "3rd")
+        self.assertEqual(bdate._ordinal(4), "4th")
+        self.assertEqual(bdate._ordinal(11), "11th")
+        self.assertEqual(bdate._ordinal(12), "12th")
+        self.assertEqual(bdate._ordinal(21), "21st")
+
+    def test_format_default_without_hours(self):
+        now = datetime(1453, 6, 7, 12, 0, tzinfo=timezone.utc)
+        b = bdate.byzantine(now, bdate.DEFAULT_LAT, bdate.DEFAULT_LON, with_hours=False)
+        self.assertEqual(
+            bdate.format_default(b),
+            "Tritē, 29 Maios 6961 AM (Julian 1453-05-29), indiction 1",
+        )
+
+    def test_format_default_mentions_night_watch(self):
+        b = bdate.ByzantineDate(
+            gregorian="1453-05-29T00:00:00+00:00",
+            julian_year=1453, julian_month=5, julian_day=29,
+            month_name="Maios", weekday="Tritē", anno_mundi=6961, indiction=1,
+            seasonal=bdate.SeasonalHour("night", 5, 2, "x", "y"),
+        )
+        self.assertTrue(
+            bdate.format_default(b).endswith("5th hour of the night (2nd watch)")
+        )
+
+
+class ArgParsingTests(unittest.TestCase):
+    def test_defaults(self):
+        args = bdate.parse_args([])
+        self.assertIsNone(args.date)
+        self.assertFalse(args.utc)
+        self.assertFalse(args.json)
+        self.assertFalse(args.no_hours)
+        self.assertEqual(args.lat, bdate.DEFAULT_LAT)
+        self.assertEqual(args.lon, bdate.DEFAULT_LON)
+
+    def test_overrides(self):
+        args = bdate.parse_args(["-u", "--json", "--no-hours",
+                                 "--lat", "37.98", "--lon", "23.73",
+                                 "-d", "1453-05-29T12:00+02:00"])
+        self.assertTrue(args.utc)
+        self.assertTrue(args.json)
+        self.assertTrue(args.no_hours)
+        self.assertEqual(args.lat, 37.98)
+        self.assertEqual(args.lon, 23.73)
+        self.assertEqual(args.date, "1453-05-29T12:00+02:00")
+
+    def test_version_exits(self):
+        buf = io.StringIO()
+        with self.assertRaises(SystemExit) as cm, redirect_stdout(buf):
+            bdate.parse_args(["--version"])
+        self.assertEqual(cm.exception.code, 0)
+        self.assertIn(bdate.__version__, buf.getvalue())
+
+
 class CliTests(unittest.TestCase):
     def test_main_runs(self):
         self.assertEqual(bdate.main(["-d", "1453-05-29T12:00+02:00", "--no-hours"]), 0)
 
     def test_bad_date(self):
-        self.assertEqual(bdate.main(["-d", "nonsense"]), 1)
+        buf = io.StringIO()
+        with redirect_stderr(buf):
+            self.assertEqual(bdate.main(["-d", "nonsense"]), 1)
+        self.assertIn("invalid date", buf.getvalue())
+
+    def test_default_output(self):
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            rc = bdate.main(["-d", "1453-06-07T12:00+00:00", "--no-hours", "-u"])
+        self.assertEqual(rc, 0)
+        self.assertEqual(
+            buf.getvalue().strip(),
+            "Tritē, 29 Maios 6961 AM (Julian 1453-05-29), indiction 1",
+        )
+
+    def test_json_output(self):
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            rc = bdate.main(["-d", "1453-06-07T12:00+00:00", "--no-hours", "-u", "--json"])
+        self.assertEqual(rc, 0)
+        payload = json.loads(buf.getvalue())
+        self.assertEqual(payload["anno_mundi"], 6961)
+        self.assertEqual(payload["indiction"], 1)
+        self.assertEqual(payload["month_name"], "Maios")
+        self.assertIsNone(payload["seasonal"])
+
+    def test_naive_date_with_utc_flag(self):
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            rc = bdate.main(["-d", "1453-05-29T12:00", "--no-hours", "-u", "--json"])
+        self.assertEqual(rc, 0)
+        self.assertTrue(json.loads(buf.getvalue())["gregorian"].endswith("+00:00"))
+
+    def test_json_output_includes_seasonal_hour(self):
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            rc = bdate.main(["-d", "2026-06-21T10:00+00:00", "-u", "--json"])
+        self.assertEqual(rc, 0)
+        seasonal = json.loads(buf.getvalue())["seasonal"]
+        self.assertEqual(seasonal["period"], "day")
+        self.assertTrue(1 <= seasonal["hour"] <= 12)
 
 
 if __name__ == "__main__":
