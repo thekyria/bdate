@@ -109,6 +109,17 @@ class AssemblyTests(unittest.TestCase):
             "Tritē, 29 Maios 6961 AM (Julian 1453-05-29), indiction 1",
         )
 
+    def test_format_default_mentions_daytime_hour(self):
+        b = bdate.ByzantineDate(
+            gregorian="1453-05-29T12:00:00+00:00",
+            julian_year=1453, julian_month=5, julian_day=29,
+            month_name="Maios", weekday="Tritē", anno_mundi=6961, indiction=1,
+            seasonal=bdate.SeasonalHour("day", 5, None, "x", "y"),
+        )
+        self.assertTrue(
+            bdate.format_default(b).endswith("5th hour of the day")
+        )
+
     def test_format_default_mentions_night_watch(self):
         b = bdate.ByzantineDate(
             gregorian="1453-05-29T00:00:00+00:00",
