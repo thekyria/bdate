@@ -1,7 +1,7 @@
 import io
 import json
 import unittest
-from contextlib import redirect_stdout, redirect_stderr
+from contextlib import redirect_stderr, redirect_stdout
 from datetime import datetime, timedelta, timezone
 
 import bdate
@@ -36,7 +36,9 @@ class CalendarTests(unittest.TestCase):
 
     def test_weekday_known_sunday(self):
         # 4 Oct 2026 is a Sunday
-        self.assertEqual(bdate.WEEKDAYS[bdate.weekday_index(bdate.gregorian_to_jdn(2026, 10, 4))], "Kyriakē")
+        self.assertEqual(
+            bdate.WEEKDAYS[bdate.weekday_index(bdate.gregorian_to_jdn(2026, 10, 4))], "Kyriakē"
+        )
 
 
 class SeasonalHourTests(unittest.TestCase):
@@ -57,7 +59,6 @@ class SeasonalHourTests(unittest.TestCase):
         now = datetime(2026, 12, 21, 12, 0, tzinfo=timezone.utc)
         self.assertIsNone(bdate.seasonal_hour(now, 80.0, 0.0))
 
-
     def test_sun_events_are_ordered_and_tz_aware(self):
         d = datetime(2026, 6, 21, tzinfo=timezone.utc).date()
         rise, sset = bdate.sun_events(d, bdate.DEFAULT_LAT, bdate.DEFAULT_LON)
@@ -70,8 +71,9 @@ class SeasonalHourTests(unittest.TestCase):
     def test_hour_is_between_1_and_12(self):
         start = datetime(2026, 3, 20, 0, 0, tzinfo=timezone.utc)
         for offset in range(0, 24):
-            s = bdate.seasonal_hour(start + timedelta(hours=offset),
-                                    bdate.DEFAULT_LAT, bdate.DEFAULT_LON)
+            s = bdate.seasonal_hour(
+                start + timedelta(hours=offset), bdate.DEFAULT_LAT, bdate.DEFAULT_LON
+            )
             self.assertIsNotNone(s)
             self.assertIn(s.period, ("day", "night"))
             self.assertTrue(1 <= s.hour <= 12)
@@ -112,24 +114,30 @@ class AssemblyTests(unittest.TestCase):
     def test_format_default_mentions_daytime_hour(self):
         b = bdate.ByzantineDate(
             gregorian="1453-05-29T12:00:00+00:00",
-            julian_year=1453, julian_month=5, julian_day=29,
-            month_name="Maios", weekday="Tritē", anno_mundi=6961, indiction=1,
+            julian_year=1453,
+            julian_month=5,
+            julian_day=29,
+            month_name="Maios",
+            weekday="Tritē",
+            anno_mundi=6961,
+            indiction=1,
             seasonal=bdate.SeasonalHour("day", 5, None, "x", "y"),
         )
-        self.assertTrue(
-            bdate.format_default(b).endswith("5th hour of the day")
-        )
+        self.assertTrue(bdate.format_default(b).endswith("5th hour of the day"))
 
     def test_format_default_mentions_night_watch(self):
         b = bdate.ByzantineDate(
             gregorian="1453-05-29T00:00:00+00:00",
-            julian_year=1453, julian_month=5, julian_day=29,
-            month_name="Maios", weekday="Tritē", anno_mundi=6961, indiction=1,
+            julian_year=1453,
+            julian_month=5,
+            julian_day=29,
+            month_name="Maios",
+            weekday="Tritē",
+            anno_mundi=6961,
+            indiction=1,
             seasonal=bdate.SeasonalHour("night", 5, 2, "x", "y"),
         )
-        self.assertTrue(
-            bdate.format_default(b).endswith("5th hour of the night (2nd watch)")
-        )
+        self.assertTrue(bdate.format_default(b).endswith("5th hour of the night (2nd watch)"))
 
 
 class ArgParsingTests(unittest.TestCase):
@@ -143,9 +151,19 @@ class ArgParsingTests(unittest.TestCase):
         self.assertEqual(args.lon, bdate.DEFAULT_LON)
 
     def test_overrides(self):
-        args = bdate.parse_args(["-u", "--json", "--no-hours",
-                                 "--lat", "37.98", "--lon", "23.73",
-                                 "-d", "1453-05-29T12:00+02:00"])
+        args = bdate.parse_args(
+            [
+                "-u",
+                "--json",
+                "--no-hours",
+                "--lat",
+                "37.98",
+                "--lon",
+                "23.73",
+                "-d",
+                "1453-05-29T12:00+02:00",
+            ]
+        )
         self.assertTrue(args.utc)
         self.assertTrue(args.json)
         self.assertTrue(args.no_hours)

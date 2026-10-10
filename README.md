@@ -45,6 +45,8 @@ pip install .   && bdate    # plain pip still works
 
 Tests: `uv run pytest`
 
+Lint/format: `uv run ruff check .` and `uv run ruff format .`
+
 Build sdist/wheel: `uv build`
 
 ## Caveats (honest ones)
