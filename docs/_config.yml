@@ -1,0 +1,9 @@
+title: bdate
+description: "date(1), but the way a Byzantine would have reckoned it — the theory behind it."
+theme: jekyll-theme-cayman
+markdown: kramdown
+kramdown:
+  math_engine: null
+
+plugins:
+  - jekyll-relative-links
