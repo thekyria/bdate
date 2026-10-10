@@ -18,9 +18,8 @@ import argparse
 import json
 import math
 import sys
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
 from datetime import date, datetime, timedelta, timezone
-from typing import Optional, Tuple
 
 __version__ = "0.1.0"
 
@@ -30,14 +29,25 @@ DEFAULT_LON = 28.9802
 
 WEEKDAYS = ["Kyriakē", "Deutera", "Tritē", "Tetartē", "Pemptē", "Paraskeuē", "Sabbaton"]
 MONTHS = [
-    "Ianouarios", "Phebrouarios", "Martios", "Aprilios", "Maios", "Iounios",
-    "Ioulios", "Augoustos", "Septembrios", "Oktōbrios", "Noembrios", "Dekembrios",
+    "Ianouarios",
+    "Phebrouarios",
+    "Martios",
+    "Aprilios",
+    "Maios",
+    "Iounios",
+    "Ioulios",
+    "Augoustos",
+    "Septembrios",
+    "Oktōbrios",
+    "Noembrios",
+    "Dekembrios",
 ]
 
 
 # --------------------------------------------------------------------------- #
 # Calendar arithmetic
 # --------------------------------------------------------------------------- #
+
 
 def gregorian_to_jdn(y: int, m: int, d: int) -> int:
     """Julian Day Number for a proleptic Gregorian calendar date."""
@@ -47,7 +57,7 @@ def gregorian_to_jdn(y: int, m: int, d: int) -> int:
     return d + (153 * mm + 2) // 5 + 365 * yy + yy // 4 - yy // 100 + yy // 400 - 32045
 
 
-def jdn_to_julian(jdn: int) -> Tuple[int, int, int]:
+def jdn_to_julian(jdn: int) -> tuple[int, int, int]:
     """(year, month, day) in the Julian calendar for a Julian Day Number."""
     c = jdn + 32082
     d = (4 * c + 3) // 1461
@@ -59,7 +69,7 @@ def jdn_to_julian(jdn: int) -> Tuple[int, int, int]:
     return year, month, day
 
 
-def gregorian_to_julian(y: int, m: int, d: int) -> Tuple[int, int, int]:
+def gregorian_to_julian(y: int, m: int, d: int) -> tuple[int, int, int]:
     return jdn_to_julian(gregorian_to_jdn(y, m, d))
 
 
@@ -90,7 +100,7 @@ def weekday_index(jdn: int) -> int:
 ZENITH_OFFICIAL = 90.833
 
 
-def _sun_event_utc(d: date, lat: float, lon: float, rising: bool) -> Optional[float]:
+def _sun_event_utc(d: date, lat: float, lon: float, rising: bool) -> float | None:
     """Return the UTC hour (0-24 float) of sunrise/sunset, or None if the sun
     never rises/sets on that date at that latitude."""
     n = d.timetuple().tm_yday
@@ -98,8 +108,9 @@ def _sun_event_utc(d: date, lat: float, lon: float, rising: bool) -> Optional[fl
     t = n + ((6 if rising else 18) - lng_hour) / 24.0
 
     M = 0.9856 * t - 3.289
-    L = (M + 1.916 * math.sin(math.radians(M))
-         + 0.020 * math.sin(math.radians(2 * M)) + 282.634) % 360.0
+    L = (
+        M + 1.916 * math.sin(math.radians(M)) + 0.020 * math.sin(math.radians(2 * M)) + 282.634
+    ) % 360.0
 
     RA = math.degrees(math.atan(0.91764 * math.tan(math.radians(L)))) % 360.0
     RA += (math.floor(L / 90) * 90) - (math.floor(RA / 90) * 90)
@@ -108,8 +119,9 @@ def _sun_event_utc(d: date, lat: float, lon: float, rising: bool) -> Optional[fl
     sin_dec = 0.39782 * math.sin(math.radians(L))
     cos_dec = math.cos(math.asin(sin_dec))
 
-    cos_h = (math.cos(math.radians(ZENITH_OFFICIAL))
-             - sin_dec * math.sin(math.radians(lat))) / (cos_dec * math.cos(math.radians(lat)))
+    cos_h = (math.cos(math.radians(ZENITH_OFFICIAL)) - sin_dec * math.sin(math.radians(lat))) / (
+        cos_dec * math.cos(math.radians(lat))
+    )
     if cos_h > 1 or cos_h < -1:
         return None
 
@@ -122,9 +134,10 @@ def _sun_event_utc(d: date, lat: float, lon: float, rising: bool) -> Optional[fl
     return (T - lng_hour) % 24.0
 
 
-def sun_events(d: date, lat: float, lon: float) -> Tuple[Optional[datetime], Optional[datetime]]:
+def sun_events(d: date, lat: float, lon: float) -> tuple[datetime | None, datetime | None]:
     """(sunrise, sunset) as tz-aware UTC datetimes for calendar date d."""
-    def to_dt(h: Optional[float]) -> Optional[datetime]:
+
+    def to_dt(h: float | None) -> datetime | None:
         if h is None:
             return None
         base = datetime(d.year, d.month, d.day, tzinfo=timezone.utc)
@@ -135,14 +148,14 @@ def sun_events(d: date, lat: float, lon: float) -> Tuple[Optional[datetime], Opt
 
 @dataclass
 class SeasonalHour:
-    period: str          # "day" or "night"
-    hour: int            # 1..12
-    watch: Optional[int] # 1..4 for night, None for day
-    start: str           # ISO of the period start (sunrise or sunset)
-    end: str             # ISO of the period end
+    period: str  # "day" or "night"
+    hour: int  # 1..12
+    watch: int | None  # 1..4 for night, None for day
+    start: str  # ISO of the period start (sunrise or sunset)
+    end: str  # ISO of the period end
 
 
-def seasonal_hour(now: datetime, lat: float, lon: float) -> Optional[SeasonalHour]:
+def seasonal_hour(now: datetime, lat: float, lon: float) -> SeasonalHour | None:
     """Compute the unequal hour at `now` (tz-aware). None in polar day/night."""
     now_utc = now.astimezone(timezone.utc)
     today = now_utc.date()
@@ -177,14 +190,19 @@ def seasonal_hour(now: datetime, lat: float, lon: float) -> Optional[SeasonalHou
     hour = min(12, int(frac * 12) + 1)
     watch = None if period == "day" else (hour - 1) // 3 + 1
     tz = now.tzinfo or timezone.utc
-    return SeasonalHour(period, hour, watch,
-                        start.astimezone(tz).isoformat(timespec="minutes"),
-                        end.astimezone(tz).isoformat(timespec="minutes"))
+    return SeasonalHour(
+        period,
+        hour,
+        watch,
+        start.astimezone(tz).isoformat(timespec="minutes"),
+        end.astimezone(tz).isoformat(timespec="minutes"),
+    )
 
 
 # --------------------------------------------------------------------------- #
 # Assembly
 # --------------------------------------------------------------------------- #
+
 
 @dataclass
 class ByzantineDate:
@@ -196,7 +214,7 @@ class ByzantineDate:
     weekday: str
     anno_mundi: int
     indiction: int
-    seasonal: Optional[SeasonalHour]
+    seasonal: SeasonalHour | None
 
 
 def byzantine(now: datetime, lat: float, lon: float, with_hours: bool = True) -> ByzantineDate:
@@ -205,7 +223,9 @@ def byzantine(now: datetime, lat: float, lon: float, with_hours: bool = True) ->
     am = anno_mundi(jy, jm)
     return ByzantineDate(
         gregorian=now.isoformat(timespec="seconds"),
-        julian_year=jy, julian_month=jm, julian_day=jd,
+        julian_year=jy,
+        julian_month=jm,
+        julian_day=jd,
         month_name=MONTHS[jm - 1],
         weekday=WEEKDAYS[weekday_index(jdn)],
         anno_mundi=am,
@@ -223,9 +243,11 @@ def _ordinal(n: int) -> str:
 
 
 def format_default(b: ByzantineDate) -> str:
-    line = (f"{b.weekday}, {b.julian_day} {b.month_name} {b.anno_mundi} AM"
-            f" (Julian {b.julian_year}-{b.julian_month:02d}-{b.julian_day:02d}),"
-            f" indiction {b.indiction}")
+    line = (
+        f"{b.weekday}, {b.julian_day} {b.month_name} {b.anno_mundi} AM"
+        f" (Julian {b.julian_year}-{b.julian_month:02d}-{b.julian_day:02d}),"
+        f" indiction {b.indiction}"
+    )
     if b.seasonal:
         s = b.seasonal
         if s.period == "day":
@@ -241,8 +263,12 @@ def parse_args(argv) -> argparse.Namespace:
         description="Like date(1), but in Byzantine reckoning.",
         epilog="Seasonal hours default to Constantinople; pass --lat/--lon for elsewhere.",
     )
-    p.add_argument("-d", "--date", metavar="ISO",
-                   help="ISO-8601 datetime to convert instead of now (e.g. 1453-05-29T12:00+02:00)")
+    p.add_argument(
+        "-d",
+        "--date",
+        metavar="ISO",
+        help="ISO-8601 datetime to convert instead of now (e.g. 1453-05-29T12:00+02:00)",
+    )
     p.add_argument("-u", "--utc", action="store_true", help="use UTC instead of local time")
     p.add_argument("--lat", type=float, default=DEFAULT_LAT, help="latitude for sunrise/sunset")
     p.add_argument("--lon", type=float, default=DEFAULT_LON, help="longitude (east positive)")
@@ -262,7 +288,9 @@ def main(argv=None) -> int:
             print(f"bdate: invalid date: {args.date!r}", file=sys.stderr)
             return 1
         if now.tzinfo is None:
-            now = now.replace(tzinfo=timezone.utc if args.utc else datetime.now().astimezone().tzinfo)
+            now = now.replace(
+                tzinfo=timezone.utc if args.utc else datetime.now().astimezone().tzinfo
+            )
     else:
         now = datetime.now(timezone.utc) if args.utc else datetime.now().astimezone()
 
@@ -276,4 +304,3 @@ def main(argv=None) -> int:
     else:
         print(format_default(b))
     return 0
-
