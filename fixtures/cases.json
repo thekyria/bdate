@@ -1,0 +1,602 @@
+[
+  {
+    "input": {
+      "date": "1453-06-07T12:00+00:00",
+      "lat": 41.0086,
+      "lon": 28.9802,
+      "with_hours": false
+    },
+    "expected": {
+      "gregorian": "1453-06-07T12:00:00+00:00",
+      "julian_year": 1453,
+      "julian_month": 5,
+      "julian_day": 29,
+      "month_name": "Maios",
+      "weekday": "Tritē",
+      "anno_mundi": 6961,
+      "indiction": 1,
+      "seasonal": null
+    },
+    "formatted": "Tritē, 29 Maios 6961 AM (Julian 1453-05-29), indiction 1"
+  },
+  {
+    "input": {
+      "date": "1453-06-07T12:00+03:00",
+      "lat": 41.0086,
+      "lon": 28.9802,
+      "with_hours": true
+    },
+    "expected": {
+      "gregorian": "1453-06-07T12:00:00+03:00",
+      "julian_year": 1453,
+      "julian_month": 5,
+      "julian_day": 29,
+      "month_name": "Maios",
+      "weekday": "Tritē",
+      "anno_mundi": 6961,
+      "indiction": 1,
+      "seasonal": {
+        "period": "day",
+        "hour": 6,
+        "watch": null,
+        "start": "1453-06-07T05:32+03:00",
+        "end": "1453-06-07T20:33+03:00"
+      }
+    },
+    "formatted": "Tritē, 29 Maios 6961 AM (Julian 1453-05-29), indiction 1, 6th hour of the day"
+  },
+  {
+    "input": {
+      "date": "1582-10-15T09:00+01:00",
+      "lat": 41.0086,
+      "lon": 28.9802,
+      "with_hours": false
+    },
+    "expected": {
+      "gregorian": "1582-10-15T09:00:00+01:00",
+      "julian_year": 1582,
+      "julian_month": 10,
+      "julian_day": 5,
+      "month_name": "Oktōbrios",
+      "weekday": "Paraskeuē",
+      "anno_mundi": 7091,
+      "indiction": 11,
+      "seasonal": null
+    },
+    "formatted": "Paraskeuē, 5 Oktōbrios 7091 AM (Julian 1582-10-05), indiction 11"
+  },
+  {
+    "input": {
+      "date": "0033-04-03T15:00+02:00",
+      "lat": 41.0086,
+      "lon": 28.9802,
+      "with_hours": true
+    },
+    "expected": {
+      "gregorian": "0033-04-03T15:00:00+02:00",
+      "julian_year": 33,
+      "julian_month": 4,
+      "julian_day": 5,
+      "month_name": "Aprilios",
+      "weekday": "Kyriakē",
+      "anno_mundi": 5541,
+      "indiction": 6,
+      "seasonal": {
+        "period": "day",
+        "hour": 9,
+        "watch": null,
+        "start": "0033-04-03T05:45+02:00",
+        "end": "0033-04-03T18:30+02:00"
+      }
+    },
+    "formatted": "Kyriakē, 5 Aprilios 5541 AM (Julian 33-04-05), indiction 6, 9th hour of the day"
+  },
+  {
+    "input": {
+      "date": "0800-12-25T10:00+02:00",
+      "lat": 41.0086,
+      "lon": 28.9802,
+      "with_hours": true
+    },
+    "expected": {
+      "gregorian": "0800-12-25T10:00:00+02:00",
+      "julian_year": 800,
+      "julian_month": 12,
+      "julian_day": 21,
+      "month_name": "Dekembrios",
+      "weekday": "Deutera",
+      "anno_mundi": 6309,
+      "indiction": 9,
+      "seasonal": {
+        "period": "day",
+        "hour": 4,
+        "watch": null,
+        "start": "0800-12-25T07:27+02:00",
+        "end": "0800-12-25T16:41+02:00"
+      }
+    },
+    "formatted": "Deutera, 21 Dekembrios 6309 AM (Julian 800-12-21), indiction 9, 4th hour of the day"
+  },
+  {
+    "input": {
+      "date": "2026-09-13T12:00+03:00",
+      "lat": 41.0086,
+      "lon": 28.9802,
+      "with_hours": true
+    },
+    "expected": {
+      "gregorian": "2026-09-13T12:00:00+03:00",
+      "julian_year": 2026,
+      "julian_month": 8,
+      "julian_day": 31,
+      "month_name": "Augoustos",
+      "weekday": "Kyriakē",
+      "anno_mundi": 7534,
+      "indiction": 4,
+      "seasonal": {
+        "period": "day",
+        "hour": 6,
+        "watch": null,
+        "start": "2026-09-13T06:42+03:00",
+        "end": "2026-09-13T19:17+03:00"
+      }
+    },
+    "formatted": "Kyriakē, 31 Augoustos 7534 AM (Julian 2026-08-31), indiction 4, 6th hour of the day"
+  },
+  {
+    "input": {
+      "date": "2026-09-14T12:00+03:00",
+      "lat": 41.0086,
+      "lon": 28.9802,
+      "with_hours": true
+    },
+    "expected": {
+      "gregorian": "2026-09-14T12:00:00+03:00",
+      "julian_year": 2026,
+      "julian_month": 9,
+      "julian_day": 1,
+      "month_name": "Septembrios",
+      "weekday": "Deutera",
+      "anno_mundi": 7535,
+      "indiction": 5,
+      "seasonal": {
+        "period": "day",
+        "hour": 6,
+        "watch": null,
+        "start": "2026-09-14T06:43+03:00",
+        "end": "2026-09-14T19:15+03:00"
+      }
+    },
+    "formatted": "Deutera, 1 Septembrios 7535 AM (Julian 2026-09-01), indiction 5, 6th hour of the day"
+  },
+  {
+    "input": {
+      "date": "2024-09-14T12:00+03:00",
+      "lat": 41.0086,
+      "lon": 28.9802,
+      "with_hours": true
+    },
+    "expected": {
+      "gregorian": "2024-09-14T12:00:00+03:00",
+      "julian_year": 2024,
+      "julian_month": 9,
+      "julian_day": 1,
+      "month_name": "Septembrios",
+      "weekday": "Sabbaton",
+      "anno_mundi": 7533,
+      "indiction": 3,
+      "seasonal": {
+        "period": "day",
+        "hour": 6,
+        "watch": null,
+        "start": "2024-09-14T06:43+03:00",
+        "end": "2024-09-14T19:14+03:00"
+      }
+    },
+    "formatted": "Sabbaton, 1 Septembrios 7533 AM (Julian 2024-09-01), indiction 3, 6th hour of the day"
+  },
+  {
+    "input": {
+      "date": "2026-06-21T03:00+03:00",
+      "lat": 41.0086,
+      "lon": 28.9802,
+      "with_hours": true
+    },
+    "expected": {
+      "gregorian": "2026-06-21T03:00:00+03:00",
+      "julian_year": 2026,
+      "julian_month": 6,
+      "julian_day": 8,
+      "month_name": "Iounios",
+      "weekday": "Kyriakē",
+      "anno_mundi": 7534,
+      "indiction": 4,
+      "seasonal": {
+        "period": "night",
+        "hour": 9,
+        "watch": 3,
+        "start": "2026-06-20T20:39+03:00",
+        "end": "2026-06-21T05:31+03:00"
+      }
+    },
+    "formatted": "Kyriakē, 8 Iounios 7534 AM (Julian 2026-06-08), indiction 4, 9th hour of the night (3rd watch)"
+  },
+  {
+    "input": {
+      "date": "2026-06-21T06:00+03:00",
+      "lat": 41.0086,
+      "lon": 28.9802,
+      "with_hours": true
+    },
+    "expected": {
+      "gregorian": "2026-06-21T06:00:00+03:00",
+      "julian_year": 2026,
+      "julian_month": 6,
+      "julian_day": 8,
+      "month_name": "Iounios",
+      "weekday": "Kyriakē",
+      "anno_mundi": 7534,
+      "indiction": 4,
+      "seasonal": {
+        "period": "day",
+        "hour": 1,
+        "watch": null,
+        "start": "2026-06-21T05:31+03:00",
+        "end": "2026-06-21T20:39+03:00"
+      }
+    },
+    "formatted": "Kyriakē, 8 Iounios 7534 AM (Julian 2026-06-08), indiction 4, 1st hour of the day"
+  },
+  {
+    "input": {
+      "date": "2026-06-21T13:00+03:00",
+      "lat": 41.0086,
+      "lon": 28.9802,
+      "with_hours": true
+    },
+    "expected": {
+      "gregorian": "2026-06-21T13:00:00+03:00",
+      "julian_year": 2026,
+      "julian_month": 6,
+      "julian_day": 8,
+      "month_name": "Iounios",
+      "weekday": "Kyriakē",
+      "anno_mundi": 7534,
+      "indiction": 4,
+      "seasonal": {
+        "period": "day",
+        "hour": 6,
+        "watch": null,
+        "start": "2026-06-21T05:31+03:00",
+        "end": "2026-06-21T20:39+03:00"
+      }
+    },
+    "formatted": "Kyriakē, 8 Iounios 7534 AM (Julian 2026-06-08), indiction 4, 6th hour of the day"
+  },
+  {
+    "input": {
+      "date": "2026-06-21T20:30+03:00",
+      "lat": 41.0086,
+      "lon": 28.9802,
+      "with_hours": true
+    },
+    "expected": {
+      "gregorian": "2026-06-21T20:30:00+03:00",
+      "julian_year": 2026,
+      "julian_month": 6,
+      "julian_day": 8,
+      "month_name": "Iounios",
+      "weekday": "Kyriakē",
+      "anno_mundi": 7534,
+      "indiction": 4,
+      "seasonal": {
+        "period": "day",
+        "hour": 12,
+        "watch": null,
+        "start": "2026-06-21T05:31+03:00",
+        "end": "2026-06-21T20:39+03:00"
+      }
+    },
+    "formatted": "Kyriakē, 8 Iounios 7534 AM (Julian 2026-06-08), indiction 4, 12th hour of the day"
+  },
+  {
+    "input": {
+      "date": "2026-06-21T23:59+03:00",
+      "lat": 41.0086,
+      "lon": 28.9802,
+      "with_hours": true
+    },
+    "expected": {
+      "gregorian": "2026-06-21T23:59:00+03:00",
+      "julian_year": 2026,
+      "julian_month": 6,
+      "julian_day": 8,
+      "month_name": "Iounios",
+      "weekday": "Kyriakē",
+      "anno_mundi": 7534,
+      "indiction": 4,
+      "seasonal": {
+        "period": "night",
+        "hour": 5,
+        "watch": 2,
+        "start": "2026-06-21T20:39+03:00",
+        "end": "2026-06-22T05:32+03:00"
+      }
+    },
+    "formatted": "Kyriakē, 8 Iounios 7534 AM (Julian 2026-06-08), indiction 4, 5th hour of the night (2nd watch)"
+  },
+  {
+    "input": {
+      "date": "2026-06-22T00:00+03:00",
+      "lat": 41.0086,
+      "lon": 28.9802,
+      "with_hours": true
+    },
+    "expected": {
+      "gregorian": "2026-06-22T00:00:00+03:00",
+      "julian_year": 2026,
+      "julian_month": 6,
+      "julian_day": 9,
+      "month_name": "Iounios",
+      "weekday": "Deutera",
+      "anno_mundi": 7534,
+      "indiction": 4,
+      "seasonal": {
+        "period": "night",
+        "hour": 5,
+        "watch": 2,
+        "start": "2026-06-21T20:39+03:00",
+        "end": "2026-06-22T05:32+03:00"
+      }
+    },
+    "formatted": "Deutera, 9 Iounios 7534 AM (Julian 2026-06-09), indiction 4, 5th hour of the night (2nd watch)"
+  },
+  {
+    "input": {
+      "date": "2026-12-21T12:00+03:00",
+      "lat": 41.0086,
+      "lon": 28.9802,
+      "with_hours": true
+    },
+    "expected": {
+      "gregorian": "2026-12-21T12:00:00+03:00",
+      "julian_year": 2026,
+      "julian_month": 12,
+      "julian_day": 8,
+      "month_name": "Dekembrios",
+      "weekday": "Deutera",
+      "anno_mundi": 7535,
+      "indiction": 5,
+      "seasonal": {
+        "period": "day",
+        "hour": 5,
+        "watch": null,
+        "start": "2026-12-21T08:25+03:00",
+        "end": "2026-12-21T17:38+03:00"
+      }
+    },
+    "formatted": "Deutera, 8 Dekembrios 7535 AM (Julian 2026-12-08), indiction 5, 5th hour of the day"
+  },
+  {
+    "input": {
+      "date": "2026-12-21T22:00+03:00",
+      "lat": 41.0086,
+      "lon": 28.9802,
+      "with_hours": true
+    },
+    "expected": {
+      "gregorian": "2026-12-21T22:00:00+03:00",
+      "julian_year": 2026,
+      "julian_month": 12,
+      "julian_day": 8,
+      "month_name": "Dekembrios",
+      "weekday": "Deutera",
+      "anno_mundi": 7535,
+      "indiction": 5,
+      "seasonal": {
+        "period": "night",
+        "hour": 4,
+        "watch": 2,
+        "start": "2026-12-21T17:38+03:00",
+        "end": "2026-12-22T08:25+03:00"
+      }
+    },
+    "formatted": "Deutera, 8 Dekembrios 7535 AM (Julian 2026-12-08), indiction 5, 4th hour of the night (2nd watch)"
+  },
+  {
+    "input": {
+      "date": "2026-03-20T00:00+00:00",
+      "lat": 41.0086,
+      "lon": 28.9802,
+      "with_hours": true
+    },
+    "expected": {
+      "gregorian": "2026-03-20T00:00:00+00:00",
+      "julian_year": 2026,
+      "julian_month": 3,
+      "julian_day": 7,
+      "month_name": "Martios",
+      "weekday": "Paraskeuē",
+      "anno_mundi": 7534,
+      "indiction": 4,
+      "seasonal": {
+        "period": "night",
+        "hour": 8,
+        "watch": 3,
+        "start": "2026-03-19T16:14+00:00",
+        "end": "2026-03-20T04:08+00:00"
+      }
+    },
+    "formatted": "Paraskeuē, 7 Martios 7534 AM (Julian 2026-03-07), indiction 4, 8th hour of the night (3rd watch)"
+  },
+  {
+    "input": {
+      "date": "2026-10-16T12:00+03:00",
+      "lat": 37.98,
+      "lon": 23.73,
+      "with_hours": true
+    },
+    "expected": {
+      "gregorian": "2026-10-16T12:00:00+03:00",
+      "julian_year": 2026,
+      "julian_month": 10,
+      "julian_day": 3,
+      "month_name": "Oktōbrios",
+      "weekday": "Paraskeuē",
+      "anno_mundi": 7535,
+      "indiction": 5,
+      "seasonal": {
+        "period": "day",
+        "hour": 5,
+        "watch": null,
+        "start": "2026-10-16T07:34+03:00",
+        "end": "2026-10-16T18:46+03:00"
+      }
+    },
+    "formatted": "Paraskeuē, 3 Oktōbrios 7535 AM (Julian 2026-10-03), indiction 5, 5th hour of the day"
+  },
+  {
+    "input": {
+      "date": "2026-01-01T00:30+00:00",
+      "lat": 51.48,
+      "lon": 0.0,
+      "with_hours": true
+    },
+    "expected": {
+      "gregorian": "2026-01-01T00:30:00+00:00",
+      "julian_year": 2025,
+      "julian_month": 12,
+      "julian_day": 19,
+      "month_name": "Dekembrios",
+      "weekday": "Pemptē",
+      "anno_mundi": 7534,
+      "indiction": 4,
+      "seasonal": {
+        "period": "night",
+        "hour": 7,
+        "watch": 3,
+        "start": "2025-12-31T16:00+00:00",
+        "end": "2026-01-01T08:05+00:00"
+      }
+    },
+    "formatted": "Pemptē, 19 Dekembrios 7534 AM (Julian 2025-12-19), indiction 4, 7th hour of the night (3rd watch)"
+  },
+  {
+    "input": {
+      "date": "2026-07-04T08:00-04:00",
+      "lat": 40.71,
+      "lon": -74.01,
+      "with_hours": true
+    },
+    "expected": {
+      "gregorian": "2026-07-04T08:00:00-04:00",
+      "julian_year": 2026,
+      "julian_month": 6,
+      "julian_day": 21,
+      "month_name": "Iounios",
+      "weekday": "Sabbaton",
+      "anno_mundi": 7534,
+      "indiction": 4,
+      "seasonal": {
+        "period": "day",
+        "hour": 2,
+        "watch": null,
+        "start": "2026-07-04T05:30-04:00",
+        "end": "2026-07-04T20:30-04:00"
+      }
+    },
+    "formatted": "Sabbaton, 21 Iounios 7534 AM (Julian 2026-06-21), indiction 4, 2nd hour of the day"
+  },
+  {
+    "input": {
+      "date": "2026-07-04T23:00-04:00",
+      "lat": 40.71,
+      "lon": -74.01,
+      "with_hours": true
+    },
+    "expected": {
+      "gregorian": "2026-07-04T23:00:00-04:00",
+      "julian_year": 2026,
+      "julian_month": 6,
+      "julian_day": 21,
+      "month_name": "Iounios",
+      "weekday": "Sabbaton",
+      "anno_mundi": 7534,
+      "indiction": 4,
+      "seasonal": {
+        "period": "night",
+        "hour": 10,
+        "watch": 4,
+        "start": "2026-07-03T20:30-04:00",
+        "end": "2026-07-05T05:30-04:00"
+      }
+    },
+    "formatted": "Sabbaton, 21 Iounios 7534 AM (Julian 2026-06-21), indiction 4, 10th hour of the night (4th watch)"
+  },
+  {
+    "input": {
+      "date": "2026-06-21T12:00+10:00",
+      "lat": -33.87,
+      "lon": 151.21,
+      "with_hours": true
+    },
+    "expected": {
+      "gregorian": "2026-06-21T12:00:00+10:00",
+      "julian_year": 2026,
+      "julian_month": 6,
+      "julian_day": 8,
+      "month_name": "Iounios",
+      "weekday": "Kyriakē",
+      "anno_mundi": 7534,
+      "indiction": 4,
+      "seasonal": {
+        "period": "night",
+        "hour": 7,
+        "watch": 3,
+        "start": "2026-06-20T16:53+10:00",
+        "end": "2026-06-22T06:59+10:00"
+      }
+    },
+    "formatted": "Kyriakē, 8 Iounios 7534 AM (Julian 2026-06-08), indiction 4, 7th hour of the night (3rd watch)"
+  },
+  {
+    "input": {
+      "date": "2026-12-21T12:00+00:00",
+      "lat": 80.0,
+      "lon": 0.0,
+      "with_hours": true
+    },
+    "expected": {
+      "gregorian": "2026-12-21T12:00:00+00:00",
+      "julian_year": 2026,
+      "julian_month": 12,
+      "julian_day": 8,
+      "month_name": "Dekembrios",
+      "weekday": "Deutera",
+      "anno_mundi": 7535,
+      "indiction": 5,
+      "seasonal": null
+    },
+    "formatted": "Deutera, 8 Dekembrios 7535 AM (Julian 2026-12-08), indiction 5"
+  },
+  {
+    "input": {
+      "date": "2026-06-21T12:00+00:00",
+      "lat": 80.0,
+      "lon": 0.0,
+      "with_hours": true
+    },
+    "expected": {
+      "gregorian": "2026-06-21T12:00:00+00:00",
+      "julian_year": 2026,
+      "julian_month": 6,
+      "julian_day": 8,
+      "month_name": "Iounios",
+      "weekday": "Kyriakē",
+      "anno_mundi": 7534,
+      "indiction": 4,
+      "seasonal": null
+    },
+    "formatted": "Kyriakē, 8 Iounios 7534 AM (Julian 2026-06-08), indiction 4"
+  }
+]

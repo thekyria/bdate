@@ -9,6 +9,10 @@ on:
 permissions:
   contents: read
 
+defaults:
+  run:
+    working-directory: python
+
 jobs:
   lint:
     name: Lint (ruff)
@@ -20,6 +24,7 @@ jobs:
         uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
+          cache-dependency-glob: python/uv.lock
 
       - name: Ruff lint
         run: uv run ruff check --output-format=github .
@@ -41,14 +46,35 @@ jobs:
         uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
+          cache-dependency-glob: python/uv.lock
 
       - name: Run tests
         run: uv run --python ${{ matrix.python-version }} pytest -v
 
+  js:
+    name: Test JS port (Node ${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ["18", "20", "22"]
+    defaults:
+      run:
+        working-directory: js
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Run tests
+        run: npm test
+
   build:
     name: Build distributions
     runs-on: ubuntu-latest
-    needs: [lint, test]
+    needs: [lint, test, js]
     steps:
       - uses: actions/checkout@v4
 
@@ -56,6 +82,7 @@ jobs:
         uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
+          cache-dependency-glob: python/uv.lock
 
       - name: Build sdist and wheel
         run: uv build
@@ -64,4 +91,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dist
-          path: dist/
+          path: python/dist/

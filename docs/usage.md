@@ -10,11 +10,16 @@ title: Usage
 
 `bdate` needs only the standard library and Python 3.9 or later.
 
+From a checkout of the repository (the Python package lives in `python/`):
+
 ```
-uv tool install .           # install the `bdate` command globally
-uvx --from . bdate          # run without installing
-pip install .               # plain pip also works
+uv tool install ./python    # install the `bdate` command globally
+uvx --from ./python bdate   # run without installing
+pip install ./python        # plain pip also works
 ```
+
+A dependency-free JavaScript port with the same output lives in `js/`, for use
+in web pages.
 
 ## Command line
 
