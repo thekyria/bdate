@@ -180,14 +180,8 @@ function isoAt(ms, tzOffset, withSeconds) {
 // Seasonal hours
 // --------------------------------------------------------------------------- //
 
-/**
- * The unequal hour at `now`, or null in polar day/night.
- *
- * Returns {period: "day"|"night", hour: 1..12, watch: 1..4|null, start, end}
- * where start/end are ISO strings (minute precision) at offset `tzOffset`.
- */
-export function seasonalHour(now, lat, lon, tzOffset = -now.getTimezoneOffset()) {
-  const nowMs = now.getTime();
+/** [start, end, period] of the day or night (epoch ms) containing `nowMs`, or null. */
+function bracket(nowMs, lat, lon) {
   const today = div(nowMs, DAY_MS) + UNIX_EPOCH_JDN;
   let [rise, sset] = sunEventsMs(today, lat, lon);
   if (rise === null || sset === null) return null;
@@ -196,20 +190,39 @@ export function seasonalHour(now, lat, lon, tzOffset = -now.getTimezoneOffset())
   // sunrise/sunset pair that brackets `now`.
   if (sset < rise) sset += DAY_MS;
 
-  let start, end, period;
-  if (rise <= nowMs && nowMs < sset) {
-    [start, end, period] = [rise, sset, "day"];
-  } else if (nowMs >= sset) {
+  if (rise <= nowMs && nowMs < sset) return [rise, sset, "day"];
+  if (nowMs >= sset) {
     let [nrise] = sunEventsMs(today + 1, lat, lon);
     if (nrise === null) return null;
     if (nrise < sset) nrise += DAY_MS;
-    [start, end, period] = [sset, nrise, "night"];
-  } else {
-    let [, pset] = sunEventsMs(today - 1, lat, lon);
-    if (pset === null) return null;
-    if (pset > rise) pset -= DAY_MS;
-    [start, end, period] = [pset, rise, "night"];
+    return [sset, nrise, "night"];
   }
+  let [, pset] = sunEventsMs(today - 1, lat, lon);
+  if (pset === null) return null;
+  if (pset > rise) pset -= DAY_MS;
+  return [pset, rise, "night"];
+}
+
+/**
+ * The day (sunrise to sunset) or night (sunset to sunrise) containing `now`,
+ * as {period, start: Date, end: Date}, or null in polar day/night.
+ */
+export function periodBounds(now, lat, lon) {
+  const b = bracket(now.getTime(), lat, lon);
+  return b && { period: b[2], start: new Date(b[0]), end: new Date(b[1]) };
+}
+
+/**
+ * The unequal hour at `now`, or null in polar day/night.
+ *
+ * Returns {period: "day"|"night", hour: 1..12, watch: 1..4|null, start, end}
+ * where start/end are ISO strings (minute precision) at offset `tzOffset`.
+ */
+export function seasonalHour(now, lat, lon, tzOffset = -now.getTimezoneOffset()) {
+  const nowMs = now.getTime();
+  const b = bracket(nowMs, lat, lon);
+  if (b === null) return null;
+  const [start, end, period] = b;
 
   const frac = (nowMs - start) / (end - start);
   const hour = Math.min(12, Math.floor(frac * 12) + 1);
