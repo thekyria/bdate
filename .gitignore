@@ -221,3 +221,6 @@ __marimo__/
 
 # Node
 node_modules/
+
+# Copied in by the Pages workflow (see .github/workflows/pages.yml)
+docs/clock/bdate.js

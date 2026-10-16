@@ -5,6 +5,7 @@ on:
     branches: ["main"]
     paths:
       - "docs/**"
+      - "js/src/**"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -26,6 +27,10 @@ jobs:
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
+
+      # The clock imports the JS port; ship a copy of it with the site.
+      - name: Copy JS port into the site
+        run: cp js/src/bdate.js docs/clock/bdate.js
 
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1

@@ -26,6 +26,10 @@ You can read these pages in any order. Each page explains the historical
 convention, gives the formula `bdate` uses, and works through an example you
 can reproduce.
 
+**[Open the live clock →](clock/)** It shows the current seasonal hour on a
+dial, for Constantinople or anywhere else, and gives you code to embed it in
+your own page.
+
 ## How the layers fit together
 
 ```

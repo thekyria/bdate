@@ -9,6 +9,7 @@ import {
   gregorianToJulian,
   indiction,
   ordinal,
+  periodBounds,
   seasonalHour,
   sunEvents,
   weekdayIndex,
@@ -51,4 +52,15 @@ test("defaults: now, Constantinople, local offset", () => {
   const b = byzantine();
   assert.ok(b.anno_mundi > 7500);
   assert.ok(b.indiction >= 1 && b.indiction <= 15);
+});
+
+test("periodBounds brackets now and chains day to night", () => {
+  const now = new Date("2026-06-21T10:00Z");
+  const day = periodBounds(now, 41.0086, 28.9802);
+  assert.equal(day.period, "day");
+  assert.ok(day.start <= now && now < day.end);
+  const night = periodBounds(new Date(day.end.getTime() + 1), 41.0086, 28.9802);
+  assert.equal(night.period, "night");
+  assert.equal(night.start.getTime(), day.end.getTime());
+  assert.equal(periodBounds(new Date("2026-12-21T12:00Z"), 80, 0), null);
 });
