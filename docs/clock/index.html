@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Byzantine Clock</title>
 <meta name="description" content="The current hour as a Byzantine would have reckoned it: unequal hours, night watches, Anno Mundi and indiction.">
+<meta name="theme-color" content="#f3f0f4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#141017" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-title" content="Byzantine">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=GFS+Didot&display=swap">
@@ -181,7 +187,7 @@
   <footer class="full">
     Computed in your browser by <a href="https://github.com/thekyria/bdate">bdate</a>.
     Sunrise and sunset are approximate to a few minutes.
-    <a href="../hours.html">How seasonal hours work</a>.
+    <a href="https://thekyria.github.io/bdate/hours.html">How seasonal hours work</a>.
   </footer>
 </main>
 
@@ -470,6 +476,9 @@ syncControls();
 render();
 setInterval(render, 15000);
 document.addEventListener("visibilitychange", () => document.visibilityState === "visible" && render());
+
+// Lets the clock be installed as an app and work offline.
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 </script>
 </body>
 </html>

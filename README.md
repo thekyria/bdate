@@ -15,6 +15,9 @@ Kyriakē, 21 Septembrios 7535 AM (Julian 2026-09-21), indiction 5, 6th hour of t
 Options: `place=athens` (or another preset), `lat=…&lon=…`, `theme=light|dark`.
 To preview locally: `cp js/src/bdate.js docs/clock/ && python3 -m http.server -d docs`,
 then open <http://localhost:8000/clock/>.
+The clock is installable as an app ("Install" or "Add to Home Screen" in the
+browser) and works offline. To host it on Vercel, import this repo: `vercel.json`
+copies `bdate.js` in and serves `docs/clock/` as the site root.
 
 ## Layout
 
