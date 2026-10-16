@@ -31,6 +31,9 @@
     --night-a: #2e3d68;     /* lapis */
     --night-b: #384a7b;
     --night-fg: #e6eaf6;
+    --bar-bg: #2b1830;      /* porphyry */
+    --bar-fg: #f3f0f4;
+    --bar-link: #ecc976;
     --font-display: "GFS Didot", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
     --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif;
   }
@@ -40,6 +43,7 @@
       --gold: #ddb052; --on-gold: #1a1208;
       --day-a: #5b4719; --day-b: #6b5420; --day-fg: #f3e4bd;
       --night-a: #1d2846; --night-b: #263459; --night-fg: #d9dff2;
+    --bar-bg: #0c090e; --bar-fg: #cfc4d2; --bar-link: #ddb052;
       color-scheme: dark;
     }
   }
@@ -48,6 +52,7 @@
     --gold: #ddb052; --on-gold: #1a1208;
     --day-a: #5b4719; --day-b: #6b5420; --day-fg: #f3e4bd;
     --night-a: #1d2846; --night-b: #263459; --night-fg: #d9dff2;
+    --bar-bg: #0c090e; --bar-fg: #cfc4d2; --bar-link: #ddb052;
     color-scheme: dark;
   }
 
@@ -57,15 +62,19 @@
     background: var(--bg);
     color: var(--ink);
     font: 15px/1.5 var(--font-body);
-    padding-left: max(16px, env(safe-area-inset-left, 0px));
-    padding-right: max(16px, env(safe-area-inset-right, 0px));
-    padding-block: 24px;
-    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
   }
   main {
-    max-width: 34rem;
+    position: relative;
+    flex: 1;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: calc(34rem + 32px);
     margin: 0 auto;
+    padding: 24px max(16px, env(safe-area-inset-right, 0px)) 24px max(16px, env(safe-area-inset-left, 0px));
     display: grid;
+    align-content: start;
     gap: 20px;
     justify-items: center;
     text-align: center;
@@ -127,26 +136,95 @@
   button { cursor: pointer; }
   button:hover, select:hover { border-color: var(--gold); }
   :focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-  .embed { width: 100%; display: grid; gap: 6px; }
-  .embed code {
+  .status { font-size: 0.8rem; color: var(--muted); min-height: 1.2em; }
+
+  /* Menu: a round button in the top corner, opening a panel below it. */
+  .menu-toggle {
+    position: absolute;
+    top: 12px;
+    right: max(12px, env(safe-area-inset-right, 0px));
+    z-index: 2;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 20px;
+    line-height: 1;
+  }
+  .menu {
+    position: absolute;
+    top: 60px;
+    right: max(12px, env(safe-area-inset-right, 0px));
+    z-index: 2;
+    width: min(22rem, calc(100% - 24px));
+    box-sizing: border-box;
+    display: grid;
+    gap: 12px;
+    padding: 14px;
+    text-align: left;
+    font-size: 0.85rem;
+    background: var(--disc);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgb(0 0 0 / 0.18);
+  }
+  .menu[hidden] { display: none; }
+  .menu h2 { margin: 0 0 4px; font: 400 1.05rem/1.3 var(--font-display); }
+  .menu p { margin: 0; color: var(--muted); }
+  .menu a { color: inherit; }
+  .menu section { min-width: 0; }
+  .menu section + section { padding-top: 12px; border-top: 1px solid var(--rule); }
+  .menu code {
     display: block;
+    margin: 6px 0;
     overflow-x: auto;
     white-space: pre;
-    text-align: left;
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     padding: 8px 10px;
     border: 1px solid var(--rule);
     border-radius: 6px;
-    background: var(--disc);
+    background: var(--bg);
     color: var(--ink);
   }
-  .status { font-size: 0.8rem; color: var(--muted); min-height: 1.2em; }
-  footer { font-size: 0.8rem; color: var(--muted); }
-  footer a { color: inherit; }
+  .menu .status { margin-top: 4px; }
+
+  /* Footer bar. */
+  .site-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 4px 10px;
+    padding: 8px max(16px, env(safe-area-inset-right, 0px)) max(8px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+    font-size: 0.8rem;
+    text-align: center;
+    background: var(--bar-bg);
+    color: var(--bar-fg);
+  }
+  .site-footer a, .support summary { color: var(--bar-link); text-decoration: none; cursor: pointer; }
+  .site-footer a:hover, .support summary:hover { text-decoration: underline; }
+  .site-footer .sep { color: var(--bar-link); opacity: 0.6; }
+  .support { position: relative; }
+  .support summary { list-style: none; }
+  .support summary::-webkit-details-marker { display: none; }
+  .support-links {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    display: grid;
+    gap: 6px;
+    padding: 10px 14px;
+    white-space: nowrap;
+    background: var(--bar-bg);
+    border: 1px solid rgb(255 255 255 / 0.12);
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 0.35);
+  }
 
   /* Embedded: the dial alone, as large as the frame allows. */
-  .compact body { padding: 0; display: grid; place-items: center; }
-  .compact main { display: block; max-width: none; }
+  .compact body { display: grid; place-items: center; }
+  .compact main { display: block; max-width: none; padding: 0; }
   .compact #dial { width: min(100vw, 100vh); }
   .compact .full { display: none; }
 </style>
@@ -178,18 +256,43 @@
     <button id="locate" type="button">Use my location</button>
   </section>
 
-  <section class="embed full">
-    <code id="embed-code"></code>
-    <div><button id="copy" type="button">Copy embed code</button></div>
-    <div id="status" class="status" role="status"></div>
-  </section>
+  <div id="status" class="status full" role="status"></div>
 
-  <footer class="full">
-    Computed in your browser by <a href="https://github.com/thekyria/bdate">bdate</a>.
-    Sunrise and sunset are approximate to a few minutes.
-    <a href="https://thekyria.github.io/bdate/hours.html">How seasonal hours work</a>.
-  </footer>
+  <button id="menu-toggle" class="menu-toggle full" type="button" aria-label="Menu" aria-expanded="false" aria-controls="menu">&#9776;</button>
+  <div id="menu" class="menu full" hidden>
+    <section>
+      <h2>About</h2>
+      <p>
+        Computed in your browser by <a href="https://github.com/thekyria/bdate">bdate</a>.
+        Sunrise and sunset are approximate to a few minutes.
+        <a href="https://thekyria.github.io/bdate/hours.html">How seasonal hours work</a>.
+      </p>
+    </section>
+    <section>
+      <h2>Embed</h2>
+      <p>Show this clock on your own page:</p>
+      <code id="embed-code"></code>
+      <button id="copy" type="button">Copy embed code</button>
+      <div id="copy-status" class="status" role="status"></div>
+    </section>
+  </div>
 </main>
+
+<footer class="site-footer full">
+  <span>&copy; 2026 bdate</span>
+  <span class="sep" aria-hidden="true">&bull;</span>
+  <span>Built with &#10084;&#65039; by <a href="http://thekyria.com" target="_blank" rel="noopener noreferrer">Me</a></span>
+  <span class="sep" aria-hidden="true">&bull;</span>
+  <details class="support">
+    <summary>Support this project</summary>
+    <div class="support-links">
+      <a href="https://buymeacoffee.com/thekyria" target="_blank" rel="noopener noreferrer">Buy Me a Coffee</a>
+      <a href="https://ko-fi.com/thekyria" target="_blank" rel="noopener noreferrer">Ko-fi</a>
+      <a href="https://paypal.me/TheodorosKyriakidis" target="_blank" rel="noopener noreferrer">PayPal</a>
+      <a href="https://www.patreon.com/c/thekyria" target="_blank" rel="noopener noreferrer">Patreon</a>
+    </div>
+  </details>
+</footer>
 
 <script type="module">
 import { byzantine, periodBounds, ordinal, DEFAULT_LAT, DEFAULT_LON } from "./bdate.js";
@@ -494,16 +597,31 @@ $("locate").addEventListener("click", () => {
 });
 
 $("copy").addEventListener("click", async () => {
-  const text = $("embed-code").textContent;
   try {
-    await navigator.clipboard.writeText(text);
-    $("status").textContent = "Embed code copied.";
+    await navigator.clipboard.writeText($("embed-code").textContent);
+    $("copy-status").textContent = "Embed code copied.";
   } catch {
     const range = document.createRange();
     range.selectNodeContents($("embed-code"));
     getSelection().removeAllRanges();
     getSelection().addRange(range);
-    $("status").textContent = "Embed code selected. Press Ctrl+C or ⌘C to copy it.";
+    $("copy-status").textContent = "Embed code selected. Press Ctrl+C or ⌘C to copy it.";
+  }
+});
+
+function setMenu(open) {
+  $("menu").hidden = !open;
+  $("menu-toggle").setAttribute("aria-expanded", String(open));
+  if (!open) $("copy-status").textContent = "";
+}
+$("menu-toggle").addEventListener("click", () => setMenu($("menu").hidden));
+document.addEventListener("click", (e) => {
+  if (!$("menu").hidden && !e.target.closest("#menu, #menu-toggle")) setMenu(false);
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && !$("menu").hidden) {
+    setMenu(false);
+    $("menu-toggle").focus();
   }
 });
 
