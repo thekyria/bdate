@@ -1,0 +1,53 @@
+name: Validate
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  style:
+    name: Spelling and file style
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      # Settings: .codespellrc
+      - name: Spelling (codespell)
+        run: uvx codespell==2.4.3
+
+      # Settings: .editorconfig and .editorconfig-checker.json
+      - name: Line endings, final newlines, whitespace (editorconfig-checker)
+        run: uvx --from editorconfig-checker==3.11.1 ec
+
+  clock:
+    name: Clock app (browser smoke test)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: tests/clock
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: tests/clock/package-lock.json
+
+      - name: Install Playwright
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Check app files and run the smoke test
+        run: npm test

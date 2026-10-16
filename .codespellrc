@@ -1,0 +1,5 @@
+[codespell]
+skip = .git,.venv,node_modules,*.lock,*.png,docs/.sass-cache,.vercel
+check-hidden =
+# "nd" is the ordinal suffix (2nd) in bdate.js and bdate/__init__.py.
+ignore-words-list = nd
