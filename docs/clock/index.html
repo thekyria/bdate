@@ -127,19 +127,6 @@
   button { cursor: pointer; }
   button:hover, select:hover { border-color: var(--gold); }
   :focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-  .embed { width: 100%; display: grid; gap: 6px; }
-  .embed code {
-    display: block;
-    overflow-x: auto;
-    white-space: pre;
-    text-align: left;
-    font-size: 0.78rem;
-    padding: 8px 10px;
-    border: 1px solid var(--rule);
-    border-radius: 6px;
-    background: var(--disc);
-    color: var(--ink);
-  }
   .status { font-size: 0.8rem; color: var(--muted); min-height: 1.2em; }
   footer { font-size: 0.8rem; color: var(--muted); }
   footer a { color: inherit; }
@@ -178,11 +165,7 @@
     <button id="locate" type="button">Use my location</button>
   </section>
 
-  <section class="embed full">
-    <code id="embed-code"></code>
-    <div><button id="copy" type="button">Copy embed code</button></div>
-    <div id="status" class="status" role="status"></div>
-  </section>
+  <div id="status" class="status full" role="status"></div>
 
   <footer class="full">
     Computed in your browser by <a href="https://github.com/thekyria/bdate">bdate</a>.
@@ -423,21 +406,6 @@ function render() {
 
 // ---------------------------------------------------------------- controls
 
-function embedUrl() {
-  const url = new URL(location.href);
-  url.search = "";
-  url.hash = "";
-  const q = new URLSearchParams({ compact: "1" });
-  if (place.key === "custom") {
-    q.set("lat", place.lat.toFixed(3));
-    q.set("lon", place.lon.toFixed(3));
-  } else {
-    q.set("place", place.key);
-  }
-  url.search = q.toString();
-  return url.toString();
-}
-
 function syncControls() {
   const select = $("place");
   if (place.key === "custom" && !select.querySelector('option[value="custom"]')) {
@@ -445,8 +413,6 @@ function syncControls() {
   }
   select.value = place.key;
   savePlace();
-  $("embed-code").textContent =
-    `<iframe src="${embedUrl()}" width="320" height="320" style="border:0" title="Byzantine clock"></iframe>`;
   try {
     const q = new URLSearchParams(location.search);
     for (const k of ["place", "lat", "lon", "name", "tz"]) q.delete(k);
@@ -491,20 +457,6 @@ $("locate").addEventListener("click", () => {
       $("status").textContent = "Location wasn't shared. Pick a place from the list instead.";
     },
   );
-});
-
-$("copy").addEventListener("click", async () => {
-  const text = $("embed-code").textContent;
-  try {
-    await navigator.clipboard.writeText(text);
-    $("status").textContent = "Embed code copied.";
-  } catch {
-    const range = document.createRange();
-    range.selectNodeContents($("embed-code"));
-    getSelection().removeAllRanges();
-    getSelection().addRange(range);
-    $("status").textContent = "Embed code selected. Press Ctrl+C or ⌘C to copy it.";
-  }
 });
 
 syncControls();
