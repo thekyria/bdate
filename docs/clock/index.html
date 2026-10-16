@@ -218,19 +218,53 @@ const params = new URLSearchParams(location.search);
 if (params.get("theme") === "dark" || params.get("theme") === "light") {
   document.documentElement.dataset.theme = params.get("theme");
 }
-if (params.get("compact") === "1") document.documentElement.classList.add("compact");
+const compact = params.get("compact") === "1";
+if (compact) document.documentElement.classList.add("compact");
 
-function initialPlace() {
-  const key = (params.get("place") || "").toLowerCase();
+/** The place named by `q` (place=… or lat=…&lon=…), or null if it names none. */
+function placeFrom(q) {
+  const key = (q.get("place") || "").toLowerCase();
   if (PLACES[key]) return { key, ...PLACES[key] };
-  const lat = parseFloat(params.get("lat"));
-  const lon = parseFloat(params.get("lon"));
+  const lat = parseFloat(q.get("lat"));
+  const lon = parseFloat(q.get("lon"));
   if (Number.isFinite(lat) && Number.isFinite(lon)) {
-    return { key: "custom", name: params.get("name") || `${lat.toFixed(2)}°, ${lon.toFixed(2)}°`, lat, lon, tz: params.get("tz") || null };
+    return { key: "custom", name: q.get("name") || `${lat.toFixed(2)}°, ${lon.toFixed(2)}°`, lat, lon, tz: q.get("tz") || null };
   }
-  return { key: "constantinople", ...PLACES.constantinople };
+  return null;
 }
-let place = initialPlace();
+
+// The last place picked is remembered in this browser, so the installed app
+// opens where you left it. A place in the URL wins; embeds never use storage.
+const STORE = "bclock-place";
+
+function storedPlace() {
+  if (compact) return null;
+  try {
+    return placeFrom(new URLSearchParams(localStorage.getItem(STORE) || ""));
+  } catch {
+    return null;
+  }
+}
+
+function savePlace() {
+  if (compact) return;
+  const q = new URLSearchParams();
+  if (place.key === "custom") {
+    q.set("lat", place.lat.toFixed(3));
+    q.set("lon", place.lon.toFixed(3));
+    q.set("name", place.name);
+    if (place.tz) q.set("tz", place.tz);
+  } else {
+    q.set("place", place.key);
+  }
+  try {
+    localStorage.setItem(STORE, q.toString());
+  } catch {
+    /* storage blocked (private window, settings): the page works without it */
+  }
+}
+
+let place = placeFrom(params) || storedPlace() || { key: "constantinople", ...PLACES.constantinople };
 
 /** Minutes east of UTC for IANA zone `tz` at `date`; the viewer's own offset if unknown. */
 function offsetMinutes(date, tz) {
@@ -410,6 +444,7 @@ function syncControls() {
     select.append(new Option(place.name, "custom"));
   }
   select.value = place.key;
+  savePlace();
   $("embed-code").textContent =
     `<iframe src="${embedUrl()}" width="320" height="320" style="border:0" title="Byzantine clock"></iframe>`;
   try {
