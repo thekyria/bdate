@@ -6,7 +6,7 @@
 // CHROMIUM_PATH points Playwright at an already installed Chromium.
 
 import assert from "node:assert/strict";
-import { cpSync, mkdtempSync, readFileSync, existsSync } from "node:fs";
+import { cpSync, mkdtempSync, readFileSync, existsSync, rmSync, writeFileSync } from "node:fs";
 import { createServer } from "node:http";
 import { tmpdir } from "node:os";
 import { extname, join, resolve } from "node:path";
@@ -137,6 +137,28 @@ await check("clock renders its readout", async () => {
   assert.match(await page.textContent("#r-hour"), /hour of the (day|night)|no seasonal hours/);
   assert.match(await page.textContent("#r-meta"), /^Athens · Julian \d{4}-\d\d-\d\d/);
   assert.ok((await page.$$("#wedges path")).length >= 24, "dial has no hour wedges");
+  await page.close();
+});
+
+await check("footer shows the version from version.json, and leaves it out without one", async () => {
+  const sha = "0123456789abcdef0123456789abcdef01234567";
+  writeFileSync(join(site, "version.json"), JSON.stringify({
+    commit: sha, shortCommit: sha.slice(0, 7), commitUrl: `https://github.com/thekyria/bdate/commit/${sha}`, environment: "preview",
+  }));
+  const page = await browser.newPage();
+  watch(page);
+  await page.route(/fonts\.(googleapis|gstatic)\.com/, fonts);
+  await page.goto(BASE);
+  await page.waitForSelector("#version:not([hidden])");
+  assert.equal(await page.textContent("#version"), "Version 0123456 (preview)");
+  assert.equal(await page.getAttribute("#version a", "href"), `https://github.com/thekyria/bdate/commit/${sha}`);
+  assert.ok(await page.isVisible(".version-sep"), "separator hidden");
+
+  rmSync(join(site, "version.json"));
+  await page.reload();
+  await page.waitForLoadState("networkidle");
+  assert.ok(!(await page.isVisible("#version")), "version shown without version.json");
+  assert.ok(!(await page.isVisible(".version-sep")), "separator shown without version.json");
   await page.close();
 });
 

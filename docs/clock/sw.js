@@ -1,6 +1,7 @@
 // Offline support for the installed clock. Pages are fetched network-first so
-// updates show up on the next visit; everything else (bdate.js, icons, the
-// font) is served from the cache and refreshed in the background.
+// updates show up on the next visit, and so is version.json, so the footer
+// matches the page; everything else (bdate.js, icons, the font) is served from
+// the cache and refreshed in the background.
 const CACHE = "bclock-v1";
 const CORE = ["./", "bdate.js", "manifest.webmanifest", "icons/icon-192.png", "icons/icon.svg"];
 
@@ -35,6 +36,18 @@ self.addEventListener("fetch", (event) => {
           return res;
         })
         .catch(() => caches.match("./")),
+    );
+    return;
+  }
+
+  if (sameOrigin && url.pathname.endsWith("/version.json")) {
+    event.respondWith(
+      fetch(req)
+        .then((res) => {
+          if (res.ok) caches.open(CACHE).then((c) => c.put(req, res.clone()));
+          return res;
+        })
+        .catch(() => caches.match(req)),
     );
     return;
   }
