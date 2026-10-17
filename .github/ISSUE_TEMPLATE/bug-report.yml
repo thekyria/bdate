@@ -1,0 +1,21 @@
+name: Something else is broken
+description: A crash, an install problem, or the clock app misbehaving.
+labels:
+  - bug
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Browser and device for the clock app; Python or Node version for the libraries.
+      placeholder: "Safari on iPhone, iOS 26 / Python 3.13 on macOS"
+    validations:
+      required: false
