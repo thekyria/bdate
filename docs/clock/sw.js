@@ -3,7 +3,7 @@
 // matches the page; everything else (bdate.js, icons, the font) is served from
 // the cache and refreshed in the background.
 const CACHE = "bclock-v1";
-const CORE = ["./", "bdate.js", "manifest.webmanifest", "icons/icon-192.png", "icons/icon.svg"];
+const CORE = ["./", "bdate.js", "manifest.webmanifest", "icons/icon-192.png", "icons/icon.svg", "flags/gb.svg", "flags/gr.svg"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE)).then(() => self.skipWaiting()));

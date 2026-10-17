@@ -6,6 +6,9 @@
 <title>Byzantine Clock · Seasonal hours, Anno Mundi and indiction</title>
 <meta name="description" content="The current hour as a Byzantine would have reckoned it: unequal (seasonal) hours, night watches, the Julian date, Anno Mundi and indiction. Free, works offline.">
 <link rel="canonical" href="https://bdate.app/">
+<link rel="alternate" hreflang="en" href="https://bdate.app/">
+<link rel="alternate" hreflang="el" href="https://bdate.app/?lang=el">
+<link rel="alternate" hreflang="x-default" href="https://bdate.app/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="bdate">
 <meta property="og:title" content="Byzantine Clock">
@@ -210,6 +213,26 @@
     box-shadow: 0 6px 20px rgb(0 0 0 / 0.18);
   }
   .menu[hidden] { display: none; }
+
+  /* Language: two small flags left of the menu button. */
+  .lang {
+    position: absolute;
+    top: 20px;
+    right: calc(max(12px, env(safe-area-inset-right, 0px)) + 48px);
+    z-index: 2;
+    display: flex;
+    gap: 2px;
+  }
+  .lang a {
+    display: flex;
+    padding: 3px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    opacity: 0.6;
+  }
+  .lang a:hover, .lang a:focus-visible, .lang a[aria-current="true"] { opacity: 1; }
+  .lang a[aria-current="true"] { border-color: var(--gold); }
+  .lang img { display: block; height: 14px; width: auto; box-shadow: 0 0 0 1px var(--rule); }
   .menu h2 { margin: 0 0 4px; font: 400 1.05rem/1.3 var(--font-display); }
   .menu p { margin: 0; color: var(--muted); }
   .menu a { color: inherit; }
@@ -274,14 +297,17 @@
 </head>
 <body>
 <main>
-  <h1 class="sr-only">Byzantine Clock</h1>
+  <h1 class="sr-only" data-i18n="heading">Byzantine Clock</h1>
   <noscript>
     <p>This clock shows the current hour as a Byzantine would have reckoned it, with
     twelve unequal hours of day and twelve of night, and needs JavaScript to run.
     Read <a href="https://thekyria.github.io/bdate/hours.html">how seasonal hours work</a>.</p>
+    <p lang="el">Αυτό το ρολόι δείχνει την τρέχουσα ώρα όπως θα τη μετρούσε ένας Βυζαντινός,
+    με δώδεκα άνισες ώρες ημέρας και δώδεκα νύχτας, και χρειάζεται JavaScript.
+    Διαβάστε <a href="https://thekyria.github.io/bdate/el/hours.html">πώς λειτουργούν οι καιρικές ώρες</a>.</p>
   </noscript>
   <svg id="dial" viewBox="-224 -224 448 448" role="img" aria-labelledby="dial-title">
-    <title id="dial-title">Byzantine seasonal-hour clock</title>
+    <title id="dial-title" data-i18n="dial">Byzantine seasonal-hour clock</title>
     <g id="watches"></g>
     <g id="wedges"></g>
     <g id="hand"></g>
@@ -300,28 +326,32 @@
   </section>
 
   <section class="controls full">
-    <label for="place">Place</label>
+    <label for="place" data-i18n="place">Place</label>
     <select id="place"></select>
-    <button id="locate" type="button">Use my location</button>
+    <button id="locate" type="button" data-i18n="locate">Use my location</button>
   </section>
 
   <div id="status" class="status full" role="status"></div>
 
-  <button id="menu-toggle" class="menu-toggle full" type="button" aria-label="Menu" aria-expanded="false" aria-controls="menu">&#9776;</button>
+  <nav class="lang full" aria-label="Language" data-i18n-label="language">
+    <a href="?lang=en" hreflang="en" lang="en" data-lang="en" title="English" aria-label="English"><img src="flags/gb.svg" alt="" width="28" height="14"></a>
+    <a href="?lang=el" hreflang="el" lang="el" data-lang="el" title="Ελληνικά" aria-label="Ελληνικά"><img src="flags/gr.svg" alt="" width="21" height="14"></a>
+  </nav>
+  <button id="menu-toggle" class="menu-toggle full" type="button" aria-label="Menu" data-i18n-label="menu" aria-expanded="false" aria-controls="menu">&#9776;</button>
   <div id="menu" class="menu full" hidden>
     <section>
-      <h2>About</h2>
-      <p>
+      <h2 data-i18n="about">About</h2>
+      <p data-i18n-html="aboutText">
         Computed in your browser by <a href="https://github.com/thekyria/bdate">bdate</a>.
         Sunrise and sunset are approximate to a few minutes.
         <a href="https://thekyria.github.io/bdate/hours.html">How seasonal hours work</a>.
       </p>
     </section>
     <section>
-      <h2>Embed</h2>
-      <p>Show this clock on your own page:</p>
+      <h2 data-i18n="embed">Embed</h2>
+      <p data-i18n="embedText">Show this clock on your own page:</p>
       <code id="embed-code"></code>
-      <button id="copy" type="button">Copy embed code</button>
+      <button id="copy" type="button" data-i18n="copy">Copy embed code</button>
       <div id="copy-status" class="status" role="status"></div>
     </section>
   </div>
@@ -330,10 +360,10 @@
 <footer class="site-footer full">
   <span>&copy; 2026 bdate</span>
   <span class="sep" aria-hidden="true">&bull;</span>
-  <span>Built with &#10084;&#65039; by <a href="http://thekyria.com" target="_blank" rel="noopener noreferrer">Me</a></span>
+  <span><span data-i18n="builtBy">Built with &#10084;&#65039; by </span><a href="http://thekyria.com" target="_blank" rel="noopener noreferrer" data-i18n="me">Me</a></span>
   <span class="sep" aria-hidden="true">&bull;</span>
   <details class="support">
-    <summary>Support this project</summary>
+    <summary data-i18n="support">Support this project</summary>
     <div class="support-links">
       <a href="https://buymeacoffee.com/thekyria" target="_blank" rel="noopener noreferrer">Buy Me a Coffee</a>
       <a href="https://ko-fi.com/thekyria" target="_blank" rel="noopener noreferrer">Ko-fi</a>
@@ -346,23 +376,107 @@
 </footer>
 
 <script type="module">
-import { byzantine, periodBounds, ordinal, DEFAULT_LAT, DEFAULT_LON } from "./bdate.js";
+import { byzantine, periodBounds, ordinal, WEEKDAYS, DEFAULT_LAT, DEFAULT_LON } from "./bdate.js";
 
 const PLACES = {
-  constantinople: { name: "Constantinople", lat: DEFAULT_LAT, lon: DEFAULT_LON, tz: "Europe/Istanbul" },
-  thessaloniki: { name: "Thessaloniki", lat: 40.632, lon: 22.951, tz: "Europe/Athens" },
-  athens: { name: "Athens", lat: 37.972, lon: 23.727, tz: "Europe/Athens" },
-  trebizond: { name: "Trebizond", lat: 41.005, lon: 39.726, tz: "Europe/Istanbul" },
-  nicaea: { name: "Nicaea", lat: 40.429, lon: 29.721, tz: "Europe/Istanbul" },
-  antioch: { name: "Antioch", lat: 36.202, lon: 36.160, tz: "Europe/Istanbul" },
-  jerusalem: { name: "Jerusalem", lat: 31.778, lon: 35.235, tz: "Asia/Jerusalem" },
-  alexandria: { name: "Alexandria", lat: 31.200, lon: 29.918, tz: "Africa/Cairo" },
-  ravenna: { name: "Ravenna", lat: 44.418, lon: 12.204, tz: "Europe/Rome" },
-  rome: { name: "Rome", lat: 41.902, lon: 12.453, tz: "Europe/Rome" },
+  constantinople: { name: "Constantinople", el: "Κωνσταντινούπολη", lat: DEFAULT_LAT, lon: DEFAULT_LON, tz: "Europe/Istanbul" },
+  thessaloniki: { name: "Thessaloniki", el: "Θεσσαλονίκη", lat: 40.632, lon: 22.951, tz: "Europe/Athens" },
+  athens: { name: "Athens", el: "Αθήνα", lat: 37.972, lon: 23.727, tz: "Europe/Athens" },
+  trebizond: { name: "Trebizond", el: "Τραπεζούντα", lat: 41.005, lon: 39.726, tz: "Europe/Istanbul" },
+  nicaea: { name: "Nicaea", el: "Νίκαια", lat: 40.429, lon: 29.721, tz: "Europe/Istanbul" },
+  antioch: { name: "Antioch", el: "Αντιόχεια", lat: 36.202, lon: 36.160, tz: "Europe/Istanbul" },
+  jerusalem: { name: "Jerusalem", el: "Ιερουσαλήμ", lat: 31.778, lon: 35.235, tz: "Asia/Jerusalem" },
+  alexandria: { name: "Alexandria", el: "Αλεξάνδρεια", lat: 31.200, lon: 29.918, tz: "Africa/Cairo" },
+  ravenna: { name: "Ravenna", el: "Ραβέννα", lat: 44.418, lon: 12.204, tz: "Europe/Rome" },
+  rome: { name: "Rome", el: "Ρώμη", lat: 41.902, lon: 12.453, tz: "Europe/Rome" },
 };
 
 const GREEK = ["α", "β", "γ", "δ", "ε", "ϛ", "ζ", "η", "θ", "ι", "ια", "ιβ"].map((n) => n + "ʹ");
 const WATCH = ["first", "second", "third", "fourth"];
+const DAYS_EL = ["Κυριακή", "Δευτέρα", "Τρίτη", "Τετάρτη", "Πέμπτη", "Παρασκευή", "Σάββατον"];
+const MONTHS_EL = [ // genitive, as in "29 Μαΐου"
+  "Ιανουαρίου", "Φεβρουαρίου", "Μαρτίου", "Απριλίου", "Μαΐου", "Ιουνίου",
+  "Ιουλίου", "Αυγούστου", "Σεπτεμβρίου", "Οκτωβρίου", "Νοεμβρίου", "Δεκεμβρίου",
+];
+const jdate = (b) => `${b.julian_year}-${String(b.julian_month).padStart(2, "0")}-${String(b.julian_day).padStart(2, "0")}`;
+const elDay = (b) => `${DAYS_EL[WEEKDAYS.indexOf(b.weekday)]}, ${b.julian_day} ${MONTHS_EL[b.julian_month - 1]}`;
+
+// ---------------------------------------------------------------- languages
+
+// Text in each language. Strings marked up in the page carry data-i18n
+// (text), data-i18n-html (trusted markup below) or data-i18n-label (aria-label).
+const I18N = {
+  en: {
+    title: "Byzantine Clock · Seasonal hours, Anno Mundi and indiction",
+    description: "The current hour as a Byzantine would have reckoned it: unequal (seasonal) hours, night watches, the Julian date, Anno Mundi and indiction. Free, works offline.",
+    heading: "Byzantine Clock",
+    dial: "Byzantine seasonal-hour clock",
+    language: "Language",
+    place: "Place",
+    locate: "Use my location",
+    yourLocation: "Your location",
+    noGeo: "This browser can't share your location. Pick a place from the list instead.",
+    finding: "Finding your location…",
+    denied: "Location wasn't shared. Pick a place from the list instead.",
+    menu: "Menu",
+    about: "About",
+    aboutText: 'Computed in your browser by <a href="https://github.com/thekyria/bdate">bdate</a>. Sunrise and sunset are approximate to a few minutes. <a href="https://thekyria.github.io/bdate/hours.html">How seasonal hours work</a>.',
+    embed: "Embed",
+    embedText: "Show this clock on your own page:",
+    embedTitle: "Byzantine clock",
+    copy: "Copy embed code",
+    copied: "Embed code copied.",
+    selected: "Embed code selected. Press Ctrl+C or ⌘C to copy it.",
+    builtBy: "Built with ❤️ by ",
+    me: "Me",
+    support: "Support this project",
+    version: "Version ",
+    hourDay: (h) => `${ordinal(h)} hour of the day`,
+    hourNight: (h) => `${ordinal(h)} hour of the night`,
+    hourWatch: (h, w) => `${ordinal(h)} hour of the night, ${WATCH[w - 1]} watch`,
+    noSun: "no sunrise or sunset today",
+    noSunLong: "The sun does not rise or set here today, so there are no seasonal hours.",
+    dialDate: (b) => `${b.julian_day} ${b.month_name} ${b.anno_mundi}`,
+    day: (b) => `${b.weekday}, ${b.julian_day} ${b.month_name}`,
+    year: (b) => `${b.anno_mundi} Anno Mundi · indiction ${b.indiction}`,
+    meta: (name, b, time) => `${name} · Julian ${jdate(b)} · modern ${b.gregorian.slice(0, 10)} ${time}`,
+  },
+  el: {
+    title: "Βυζαντινό Ρολόι · Καιρικές ώρες, έτος από κτίσεως κόσμου και ινδικτιώνα",
+    description: "Η τρέχουσα ώρα όπως θα τη μετρούσε ένας Βυζαντινός: άνισες (καιρικές) ώρες, νυχτερινές φυλακές, ιουλιανή ημερομηνία, έτος από κτίσεως κόσμου και ινδικτιώνα. Δωρεάν, λειτουργεί και χωρίς σύνδεση.",
+    heading: "Βυζαντινό Ρολόι",
+    dial: "Βυζαντινό ρολόι καιρικών ωρών",
+    language: "Γλώσσα",
+    place: "Τόπος",
+    locate: "Η τοποθεσία μου",
+    yourLocation: "Η τοποθεσία σας",
+    noGeo: "Αυτός ο περιηγητής δεν μπορεί να δώσει την τοποθεσία σας. Διαλέξτε έναν τόπο από τη λίστα.",
+    finding: "Αναζήτηση της τοποθεσίας σας…",
+    denied: "Η τοποθεσία δεν δόθηκε. Διαλέξτε έναν τόπο από τη λίστα.",
+    menu: "Μενού",
+    about: "Σχετικά",
+    aboutText: 'Υπολογίζεται στον περιηγητή σας από το <a href="https://github.com/thekyria/bdate">bdate</a>. Η ανατολή και η δύση του ηλίου είναι ακριβείς με απόκλιση λίγων λεπτών. <a href="https://thekyria.github.io/bdate/el/hours.html">Πώς λειτουργούν οι καιρικές ώρες</a>.',
+    embed: "Ενσωμάτωση",
+    embedText: "Βάλτε αυτό το ρολόι στη δική σας σελίδα:",
+    embedTitle: "Βυζαντινό ρολόι",
+    copy: "Αντιγραφή κώδικα",
+    copied: "Ο κώδικας αντιγράφηκε.",
+    selected: "Ο κώδικας επιλέχθηκε. Πατήστε Ctrl+C ή ⌘C για να τον αντιγράψετε.",
+    builtBy: "Φτιαγμένο με ❤️ από ",
+    me: "εμένα",
+    support: "Υποστηρίξτε το έργο",
+    version: "Έκδοση ",
+    hourDay: (h) => `${h}η ώρα της ημέρας`,
+    hourNight: (h) => `${h}η ώρα της νύχτας`,
+    hourWatch: (h, w) => `${h}η ώρα της νύχτας, ${w}η φυλακή`,
+    noSun: "χωρίς ανατολή ή δύση σήμερα",
+    noSunLong: "Ο ήλιος σήμερα εδώ δεν ανατέλλει ή δεν δύει, οπότε δεν υπάρχουν καιρικές ώρες.",
+    dialDate: (b) => `${b.julian_day} ${MONTHS_EL[b.julian_month - 1]} ${b.anno_mundi}`,
+    day: elDay,
+    year: (b) => `${b.anno_mundi} από κτίσεως κόσμου · ινδικτιώνα ${b.indiction}`,
+    meta: (name, b, time) => `${name} · ιουλιανό ${jdate(b)} · σύγχρονο ${b.gregorian.slice(0, 10)} ${time}`,
+  },
+};
 const DAY = 86400000;
 const SVG = "http://www.w3.org/2000/svg";
 
@@ -375,6 +489,31 @@ if (params.get("theme") === "dark" || params.get("theme") === "light") {
 const compact = params.get("compact") === "1";
 if (compact) document.documentElement.classList.add("compact");
 
+// Language: ?lang=…, then the last one picked in this browser, then the
+// browser's preferred languages. Embeds follow ?lang= only.
+const LANG_STORE = "bclock-lang";
+
+function initialLang() {
+  const asked = (params.get("lang") || "").toLowerCase();
+  if (I18N[asked]) return asked;
+  if (!compact) {
+    try {
+      const stored = localStorage.getItem(LANG_STORE);
+      if (I18N[stored]) return stored;
+    } catch {
+      /* storage blocked: fall through */
+    }
+  }
+  for (const pref of navigator.languages?.length ? navigator.languages : [navigator.language]) {
+    const code = String(pref).toLowerCase().split("-")[0];
+    if (I18N[code]) return code;
+  }
+  return "en";
+}
+
+let lang = initialLang();
+const t = (key) => I18N[lang][key];
+
 /** The place named by `q` (place=… or lat=…&lon=…), or null if it names none. */
 function placeFrom(q) {
   const key = (q.get("place") || "").toLowerCase();
@@ -382,7 +521,8 @@ function placeFrom(q) {
   const lat = parseFloat(q.get("lat"));
   const lon = parseFloat(q.get("lon"));
   if (Number.isFinite(lat) && Number.isFinite(lon)) {
-    return { key: "custom", name: q.get("name") || `${lat.toFixed(2)}°, ${lon.toFixed(2)}°`, lat, lon, tz: q.get("tz") || null };
+    const mine = q.get("mine") === "1";
+    return { key: "custom", name: q.get("name") || `${lat.toFixed(2)}°, ${lon.toFixed(2)}°`, mine, lat, lon, tz: q.get("tz") || null };
   }
   return null;
 }
@@ -406,7 +546,8 @@ function savePlace() {
   if (place.key === "custom") {
     q.set("lat", place.lat.toFixed(3));
     q.set("lon", place.lon.toFixed(3));
-    q.set("name", place.name);
+    if (place.mine) q.set("mine", "1");
+    else q.set("name", place.name);
     if (place.tz) q.set("tz", place.tz);
   } else {
     q.set("place", place.key);
@@ -419,6 +560,12 @@ function savePlace() {
 }
 
 let place = placeFrom(params) || storedPlace() || { key: "constantinople", ...PLACES.constantinople };
+
+/** The place's name in the current language. */
+function placeName(p) {
+  if (PLACES[p.key]) return lang === "el" ? PLACES[p.key].el : PLACES[p.key].name;
+  return p.mine ? t("yourLocation") : p.name;
+}
 
 /** Minutes east of UTC for IANA zone `tz` at `date`; the viewer's own offset if unknown. */
 function offsetMinutes(date, tz) {
@@ -554,25 +701,20 @@ function render() {
     el("circle", { cx: tx, cy: ty, r: 5, class: "hand-tip" }, $("hand"));
 
     $("c-num").textContent = GREEK[s.hour - 1];
-    $("c-label").textContent = s.period === "day"
-      ? `${ordinal(s.hour)} hour of the day`
-      : `${ordinal(s.hour)} hour of the night`;
-    $("r-hour").textContent = s.period === "day"
-      ? `${ordinal(s.hour)} hour of the day`
-      : `${ordinal(s.hour)} hour of the night, ${WATCH[s.watch - 1]} watch`;
+    $("c-label").textContent = s.period === "day" ? t("hourDay")(s.hour) : t("hourNight")(s.hour);
+    $("r-hour").textContent = s.period === "day" ? t("hourDay")(s.hour) : t("hourWatch")(s.hour, s.watch);
   } else {
     el("circle", { r: 176, class: "wedge-night" }, $("wedges"));
     el("circle", { r: 110, class: "disc" }, $("wedges"));
     $("c-num").textContent = "—";
-    $("c-label").textContent = "no sunrise or sunset today";
-    $("r-hour").textContent = "The sun does not rise or set here today, so there are no seasonal hours.";
+    $("c-label").textContent = t("noSun");
+    $("r-hour").textContent = t("noSunLong");
   }
 
-  $("c-date").textContent = `${b.julian_day} ${b.month_name} ${b.anno_mundi}`;
-  $("r-day").textContent = `${b.weekday}, ${b.julian_day} ${b.month_name}`;
-  $("r-year").textContent = `${b.anno_mundi} Anno Mundi · indiction ${b.indiction}`;
-  const jdate = `${b.julian_year}-${String(b.julian_month).padStart(2, "0")}-${String(b.julian_day).padStart(2, "0")}`;
-  $("r-meta").textContent = `${place.name} · Julian ${jdate} · modern ${b.gregorian.slice(0, 10)} ${clockTime(now)}`;
+  $("c-date").textContent = t("dialDate")(b);
+  $("r-day").textContent = t("day")(b);
+  $("r-year").textContent = t("year")(b);
+  $("r-meta").textContent = t("meta")(placeName(place), b, clockTime(now));
 }
 
 // ---------------------------------------------------------------- controls
@@ -588,6 +730,7 @@ function embedUrl() {
   } else {
     q.set("place", place.key);
   }
+  if (lang !== "en") q.set("lang", lang);
   url.search = q.toString();
   return url.toString();
 }
@@ -595,12 +738,15 @@ function embedUrl() {
 function syncControls() {
   const select = $("place");
   if (place.key === "custom" && !select.querySelector('option[value="custom"]')) {
-    select.append(new Option(place.name, "custom"));
+    select.append(new Option(placeName(place), "custom"));
+  }
+  for (const option of select.options) {
+    option.text = option.value === "custom" ? placeName(place) : placeName({ key: option.value });
   }
   select.value = place.key;
   savePlace();
   $("embed-code").textContent =
-    `<iframe src="${embedUrl()}" width="320" height="320" style="border:0" title="Byzantine clock"></iframe>`;
+    `<iframe src="${embedUrl()}" width="320" height="320" style="border:0" title="${t("embedTitle")}"></iframe>`;
   try {
     const q = new URLSearchParams(location.search);
     for (const k of ["place", "lat", "lon", "name", "tz"]) q.delete(k);
@@ -617,7 +763,49 @@ function syncControls() {
   }
 }
 
-for (const [key, p] of Object.entries(PLACES)) $("place").append(new Option(p.name, key));
+for (const key of Object.keys(PLACES)) $("place").append(new Option(placeName({ key }), key));
+
+/** Puts the page's fixed text, title and links in the current language. */
+function applyLang() {
+  document.documentElement.lang = lang;
+  document.title = t("title");
+  document.querySelector('meta[name="description"]').content = t("description");
+  document.querySelector('link[rel="canonical"]').href = lang === "en" ? "https://bdate.app/" : `https://bdate.app/?lang=${lang}`;
+  for (const node of document.querySelectorAll("[data-i18n]")) node.textContent = t(node.dataset.i18n);
+  for (const node of document.querySelectorAll("[data-i18n-html]")) node.innerHTML = t(node.dataset.i18nHtml);
+  for (const node of document.querySelectorAll("[data-i18n-label]")) node.setAttribute("aria-label", t(node.dataset.i18nLabel));
+  for (const link of document.querySelectorAll(".lang a")) link.setAttribute("aria-current", String(link.dataset.lang === lang));
+}
+
+function setLang(next) {
+  lang = next;
+  try {
+    localStorage.setItem(LANG_STORE, lang);
+  } catch {
+    /* storage blocked: the choice lasts for this visit */
+  }
+  try {
+    const q = new URLSearchParams(location.search);
+    if (lang === "en") q.delete("lang");
+    else q.set("lang", lang);
+    const qs = q.toString();
+    history.replaceState(null, "", qs ? `?${qs}` : location.pathname);
+  } catch {
+    /* some frames refuse history changes */
+  }
+  $("status").textContent = "";
+  $("copy-status").textContent = "";
+  applyLang();
+  syncControls();
+  render();
+}
+
+for (const link of document.querySelectorAll(".lang a")) {
+  link.addEventListener("click", (e) => {
+    e.preventDefault();
+    setLang(link.dataset.lang);
+  });
+}
 
 $("place").addEventListener("change", (e) => {
   const key = e.target.value;
@@ -628,21 +816,21 @@ $("place").addEventListener("change", (e) => {
 
 $("locate").addEventListener("click", () => {
   if (!navigator.geolocation) {
-    $("status").textContent = "This browser can't share your location. Pick a place from the list instead.";
+    $("status").textContent = t("noGeo");
     return;
   }
-  $("status").textContent = "Finding your location…";
+  $("status").textContent = t("finding");
   navigator.geolocation.getCurrentPosition(
     (pos) => {
       const { latitude: lat, longitude: lon } = pos.coords;
-      place = { key: "custom", name: "Your location", lat, lon, tz: null };
+      place = { key: "custom", name: "", mine: true, lat, lon, tz: null };
       $("place").querySelector('option[value="custom"]')?.remove();
       $("status").textContent = "";
       syncControls();
       render();
     },
     () => {
-      $("status").textContent = "Location wasn't shared. Pick a place from the list instead.";
+      $("status").textContent = t("denied");
     },
   );
 });
@@ -650,13 +838,13 @@ $("locate").addEventListener("click", () => {
 $("copy").addEventListener("click", async () => {
   try {
     await navigator.clipboard.writeText($("embed-code").textContent);
-    $("copy-status").textContent = "Embed code copied.";
+    $("copy-status").textContent = t("copied");
   } catch {
     const range = document.createRange();
     range.selectNodeContents($("embed-code"));
     getSelection().removeAllRanges();
     getSelection().addRange(range);
-    $("copy-status").textContent = "Embed code selected. Press Ctrl+C or ⌘C to copy it.";
+    $("copy-status").textContent = t("selected");
   }
 });
 
@@ -676,6 +864,7 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
+applyLang();
 syncControls();
 render();
 setInterval(render, 15000);
@@ -698,7 +887,10 @@ fetch("version.json", { cache: "no-store" })
     commit.className = "version-commit";
     commit.textContent = info.shortCommit;
     if (typeof info.commit === "string") commit.title = `Commit ${info.commit}`;
-    $("version").append("Version ", commit);
+    const label = document.createElement("span");
+    label.dataset.i18n = "version";
+    label.textContent = t("version");
+    $("version").append(label, commit);
     if (typeof info.environment === "string" && info.environment !== "production") {
       $("version").append(` (${info.environment})`);
     }

@@ -1,5 +1,7 @@
 # bdate
 
+**English** | [Ελληνικά](README.el.md)
+
 `date(1)`, but the way a Byzantine would have reckoned it.
 
 ```
@@ -12,7 +14,7 @@ Kyriakē, 21 Septembrios 7535 AM (Julian 2026-09-21), indiction 5, 6th hour of t
 
 🕰 **Live clock:** <https://bdate.app/>. Embed it with
 `<iframe src="https://bdate.app/?compact=1" width="320" height="320" style="border:0"></iframe>`.
-Options: `place=athens` (or another preset), `lat=…&lon=…`, `theme=light|dark`.
+Options: `place=athens` (or another preset), `lat=…&lon=…`, `theme=light|dark`, `lang=en|el`.
 To preview locally: `cp js/src/bdate.js docs/clock/ && python3 -m http.server -d docs`,
 then open <http://localhost:8000/clock/>.
 The clock is installable as an app ("Install" or "Add to Home Screen" in the
@@ -22,6 +24,9 @@ copies `bdate.js` in and serves `docs/clock/` as the site root.
 🔌 **Web API:** <https://bdate.app/api/v1/date> returns `bdate --json`'s output;
 it takes `date`, `tz`, `lat`, `lon` and `hours=0` (see
 [Usage](https://thekyria.github.io/bdate/usage.html#web-api)).
+
+The clock and the docs are in English and Greek (flags at the top right). The
+command line and the API print the names in romanised form.
 
 ## Layout
 

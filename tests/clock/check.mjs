@@ -162,6 +162,32 @@ await check("footer shows the version from version.json, and leaves it out witho
   await page.close();
 });
 
+await check("Greek: ?lang=el, the flags, and the choice is remembered", async () => {
+  const page = await browser.newPage();
+  watch(page);
+  await page.route(/fonts\.(googleapis|gstatic)\.com/, fonts);
+  await page.goto(`${BASE}?lang=el&place=athens`);
+  assert.equal(await page.getAttribute("html", "lang"), "el");
+  assert.match(await page.textContent("#r-hour"), /η ώρα της (ημέρας|νύχτας)|καιρικές ώρες/);
+  assert.match(await page.textContent("#r-meta"), /^Αθήνα · ιουλιανό \d{4}-\d\d-\d\d/);
+  assert.match(await page.textContent("#r-year"), /από κτίσεως κόσμου · ινδικτιώνα \d+$/);
+  assert.equal(await page.textContent("label[for=place]"), "Τόπος");
+  assert.equal(await page.getAttribute('.lang a[data-lang="el"]', "aria-current"), "true");
+  assert.equal(await page.getAttribute('link[rel="canonical"]', "href"), "https://bdate.app/?lang=el");
+  await page.click("#menu-toggle");
+  assert.match(await page.textContent("#embed-code"), /place=athens&lang=el/);
+  await page.keyboard.press("Escape");
+
+  await page.click('.lang a[data-lang="en"]');
+  assert.equal(await page.getAttribute("html", "lang"), "en");
+  assert.match(await page.textContent("#r-meta"), /^Athens · Julian/);
+  assert.ok(!page.url().includes("lang="), "lang=en left in the URL");
+  await page.click('.lang a[data-lang="el"]');
+  await page.goto(`${BASE}?place=athens`);
+  assert.match(await page.textContent("#r-meta"), /^Αθήνα/, "language choice not remembered");
+  await page.close();
+});
+
 await check("installable: manifest parses and the service worker takes over", async () => {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
