@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
-  "buildCommand": "cp js/src/bdate.js docs/clock/bdate.js && node scripts/clock-version.mjs",
+  "buildCommand": "cp js/src/bdate.js docs/clock/bdate.js && node scripts/write-version.mjs",
   "outputDirectory": "docs/clock",
   "headers": [
     {

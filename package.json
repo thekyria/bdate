@@ -1,0 +1,6 @@
+{
+  "name": "bdate-app",
+  "private": true,
+  "description": "bdate.app on Vercel: the clock (docs/clock) and the web API (api/)",
+  "type": "module"
+}

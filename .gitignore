@@ -225,5 +225,6 @@ node_modules/
 # Copied in by the Pages workflow (see .github/workflows/pages.yml)
 docs/clock/bdate.js
 
-# Written at build time by scripts/clock-version.mjs
+# Written at build time by scripts/write-version.mjs
 docs/clock/version.json
+docs/_data/version.json

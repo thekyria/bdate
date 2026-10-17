@@ -6,7 +6,7 @@ on:
     paths:
       - "docs/**"
       - "js/src/**"
-      - "scripts/clock-version.mjs"
+      - "scripts/write-version.mjs"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -33,9 +33,9 @@ jobs:
       - name: Copy JS port into the site
         run: cp js/src/bdate.js docs/clock/bdate.js
 
-      # The footer shows the deployed commit as the clock's version.
-      - name: Write the clock's version.json
-        run: node scripts/clock-version.mjs
+      # The footers of the docs and the clock show the deployed commit as the version.
+      - name: Write version.json
+        run: node scripts/write-version.mjs
 
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
