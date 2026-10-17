@@ -34,3 +34,8 @@ defaults:
       path: clock
     values:
       sitemap: false
+  # Google Search Console ownership check; keep it out of the sitemap.
+  - scope:
+      path: googleca204926ec3d65c5.html
+    values:
+      sitemap: false
