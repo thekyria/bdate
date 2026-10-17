@@ -29,6 +29,11 @@ defaults:
       path: ""
     values:
       image: /clock/social-image.png
+  # Greek translations of the pages live under el/.
+  - scope:
+      path: el
+    values:
+      lang: el
   # The clock's canonical home is https://bdate.app/, which has its own sitemap.
   - scope:
       path: clock
