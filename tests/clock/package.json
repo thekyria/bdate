@@ -1,0 +1,12 @@
+{
+  "name": "bdate-clock-tests",
+  "private": true,
+  "description": "Checks for the clock page in docs/clock: app files and a browser smoke test",
+  "type": "module",
+  "scripts": {
+    "test": "node check.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.63.0"
+  }
+}

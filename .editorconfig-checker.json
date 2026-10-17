@@ -1,0 +1,6 @@
+{
+  "Exclude": ["\\.venv/", "\\.sass-cache/", "\\.png$", "uv\\.lock$"],
+  "Disable": {
+    "IndentSize": true
+  }
+}
