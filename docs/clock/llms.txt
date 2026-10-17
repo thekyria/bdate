@@ -21,7 +21,6 @@ Sunrise and sunset, which set the seasonal hours, are approximate (within a few 
 - [The indiction](https://thekyria.github.io/bdate/indiction.html): the 15-year cycle used to date documents
 - [Days and months](https://thekyria.github.io/bdate/names.html): the Greek weekday and month names
 - [Seasonal hours](https://thekyria.github.io/bdate/hours.html): unequal hours and the four night watches
-
 - [Ελληνικά](https://thekyria.github.io/bdate/el/): the same pages in Greek
 
 ## Source
