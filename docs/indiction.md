@@ -1,5 +1,6 @@
 ---
 title: The indiction
+description: "The indiction, the 15-year Byzantine tax cycle used to date documents, when it begins each year, and how bdate computes it."
 ---
 
 # The indiction

@@ -1,5 +1,6 @@
 ---
 title: Usage
+description: "Install and use bdate: the command-line options, JSON output, choosing a location for seasonal hours, and the JavaScript port."
 ---
 
 # Usage

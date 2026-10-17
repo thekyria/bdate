@@ -10,8 +10,8 @@ Kyriakē, 21 Septembrios 7535 AM (Julian 2026-09-21), indiction 5, 6th hour of t
 📖 **Documentation & theory:** <https://thekyria.github.io/bdate/>
 (source in [`docs/`](docs/))
 
-🕰 **Live clock:** <https://thekyria.github.io/bdate/clock/>. Embed it with
-`<iframe src="https://thekyria.github.io/bdate/clock/?compact=1" width="320" height="320" style="border:0"></iframe>`.
+🕰 **Live clock:** <https://bdate.app/>. Embed it with
+`<iframe src="https://bdate.app/?compact=1" width="320" height="320" style="border:0"></iframe>`.
 Options: `place=athens` (or another preset), `lat=…&lon=…`, `theme=light|dark`.
 To preview locally: `cp js/src/bdate.js docs/clock/ && python3 -m http.server -d docs`,
 then open <http://localhost:8000/clock/>.

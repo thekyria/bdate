@@ -1,5 +1,6 @@
 ---
 title: Anno Mundi
+description: "How the Byzantines counted years from the creation of the world (Anno Mundi), the September new year, and how bdate converts modern dates."
 ---
 
 # Anno Mundi — the Byzantine world era

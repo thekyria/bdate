@@ -1,9 +1,36 @@
 title: bdate
 description: "date(1), but the way a Byzantine would have reckoned it — the theory behind it."
+lang: en
+url: https://thekyria.github.io
+baseurl: /bdate
 theme: jekyll-theme-cayman
 markdown: kramdown
 kramdown:
   math_engine: null
 
+# jekyll-seo-tag fills in the canonical link, Open Graph and structured data
+# (the Cayman theme calls it); jekyll-sitemap writes /bdate/sitemap.xml.
 plugins:
   - jekyll-relative-links
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+author:
+  name: thekyria
+  url: http://thekyria.com
+social:
+  name: bdate
+  links:
+    - https://github.com/thekyria/bdate
+    - https://bdate.app/
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      image: /clock/social-image.png
+  # The clock's canonical home is https://bdate.app/, which has its own sitemap.
+  - scope:
+      path: clock
+    values:
+      sitemap: false

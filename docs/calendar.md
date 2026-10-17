@@ -1,5 +1,6 @@
 ---
 title: The Julian calendar
+description: "The Julian calendar used throughout Byzantine history: leap years, its drift from the Gregorian calendar, and how bdate converts dates."
 ---
 
 # The Julian calendar
