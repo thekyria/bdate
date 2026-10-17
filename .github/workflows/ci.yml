@@ -71,6 +71,10 @@ jobs:
       - name: Run tests
         run: npm test
 
+      - name: Test the bdate.app API
+        working-directory: .
+        run: node --test tests/api/date.test.mjs
+
   build:
     name: Build distributions
     runs-on: ubuntu-latest

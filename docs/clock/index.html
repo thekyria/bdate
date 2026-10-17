@@ -682,7 +682,7 @@ setInterval(render, 15000);
 document.addEventListener("visibilitychange", () => document.visibilityState === "visible" && render());
 
 // Footer version: the site is deployed continuously, so the deployed git commit
-// (short SHA, linked to the commit) acts as the version. scripts/clock-version.mjs
+// (short SHA, linked to the commit) acts as the version. scripts/write-version.mjs
 // writes version.json at build time; without it the footer leaves the version out.
 fetch("version.json", { cache: "no-store" })
   .then((res) => (res.ok ? res.json() : null))

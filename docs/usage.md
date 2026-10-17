@@ -58,3 +58,27 @@ At night the hour part reads, for example, `5th hour of the night (2nd watch)`.
 | `anno_mundi` | Byzantine world-era year |
 | `indiction` | 1–15 |
 | `seasonal` | `null`, or `{period, hour, watch, start, end}` |
+
+## Web API
+
+`https://bdate.app/api/v1/date` returns the same JSON over HTTP, plus `text`
+(the one-line output) and the `lat` and `lon` it used:
+
+```
+$ curl 'https://bdate.app/api/v1/date?date=1453-05-29T05:30&tz=Europe/Istanbul'
+{"gregorian":"1453-05-29T05:30:00+01:55", …, "text":"Kyriakē, 20 Maios 6961 AM (Julian 1453-05-20), indiction 1, 1st hour of the day", …}
+```
+
+| Parameter | Effect |
+|---|---|
+| *(none)* | Convert the current moment, in UTC, for Constantinople |
+| `date` | An ISO-8601 datetime instead of now (read as **Gregorian**) |
+| `tz` | An IANA time zone, e.g. `Europe/Athens`: report the date and hours at its offset |
+| `lat`, `lon` | Location used for sunrise/sunset |
+| `hours=0` | Skip the seasonal-hour calculation |
+
+A `date` with a UTC offset keeps that offset unless you also give `tz`. One
+without an offset is read in `tz`, or in UTC. Bad input gets a `400` response
+with an `error` message. Before 1970 or so, time zones fall back to local mean
+time (Istanbul's is `+01:55`), so for old dates you may prefer an explicit
+offset such as `+02:00`.
