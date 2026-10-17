@@ -1,0 +1,52 @@
+name: Wrong date or hour
+description: bdate gave a Byzantine date, indiction or seasonal hour you believe is wrong.
+title: "Wrong reckoning: "
+labels:
+  - bug
+body:
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where did you see it?
+      options:
+        - Clock app (bdate.app or the GitHub Pages clock)
+        - Command line (Python)
+        - JavaScript library
+        - Documentation
+    validations:
+      required: true
+
+  - type: input
+    id: when
+    attributes:
+      label: Date, time and time zone
+      description: The modern (Gregorian) moment you asked about.
+      placeholder: "2026-10-16 17:29, Europe/Athens"
+    validations:
+      required: true
+
+  - type: input
+    id: place
+    attributes:
+      label: Place
+      description: A preset place, or latitude and longitude. Matters for seasonal hours.
+      placeholder: "Athens, or 37.98, 23.73"
+    validations:
+      required: false
+
+  - type: textarea
+    id: got
+    attributes:
+      label: What bdate said
+      description: Paste the output, or describe what the clock showed.
+      render: text
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected, and why
+      description: Your reasoning or a source (a calendar table, a manuscript date, a reference work).
+    validations:
+      required: true

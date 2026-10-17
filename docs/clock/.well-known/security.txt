@@ -1,0 +1,5 @@
+Contact: https://github.com/thekyria/bdate/security
+Policy: https://github.com/thekyria/bdate/security/policy
+Expires: 2027-10-01T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://bdate.app/.well-known/security.txt

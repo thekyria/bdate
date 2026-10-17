@@ -1,0 +1,28 @@
+# Monthly update PRs, one per ecosystem (updates are grouped).
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]
+
+  # Dev tools only (pytest, ruff); the package itself has no dependencies.
+  - package-ecosystem: uv
+    directory: /python
+    schedule:
+      interval: monthly
+    groups:
+      python-dev:
+        patterns: ["*"]
+
+  # Playwright, for the clock smoke test.
+  - package-ecosystem: npm
+    directory: /tests/clock
+    schedule:
+      interval: monthly
+    groups:
+      clock-tests:
+        patterns: ["*"]
