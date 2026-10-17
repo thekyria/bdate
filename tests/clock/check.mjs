@@ -100,6 +100,28 @@ await check("files linked from the page and cached by sw.js exist", () => {
   }
 });
 
+await check("search and social tags point to bdate.app", () => {
+  const html = readFileSync(join(site, "index.html"), "utf8");
+  const meta = (attr, name) => html.match(new RegExp(`<meta ${attr}="${name}" content="([^"]*)"`))?.[1];
+  const ORIGIN = "https://bdate.app/";
+  assert.equal(html.match(/<link rel="canonical" href="([^"]+)"/)?.[1], ORIGIN, "canonical link");
+  assert.equal(meta("property", "og:url"), ORIGIN, "og:url");
+  for (const [attr, name] of [["name", "description"], ["property", "og:title"], ["property", "og:description"], ["name", "twitter:card"]]) {
+    assert.ok(meta(attr, name), `missing ${name}`);
+  }
+  const image = meta("property", "og:image");
+  assert.ok(image?.startsWith(ORIGIN), `og:image should be under ${ORIGIN}`);
+  const [w, h] = pngSize(join(site, image.slice(ORIGIN.length)));
+  assert.equal(`${w}x${h}`, `${meta("property", "og:image:width")}x${meta("property", "og:image:height")}`, "og:image size");
+  const ld = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
+  assert.equal(ld.url, ORIGIN, "structured data url");
+  assert.equal((html.match(/<h1[\s>]/g) || []).length, 1, "exactly one h1");
+  const robots = readFileSync(join(site, "robots.txt"), "utf8");
+  const sitemap = robots.match(/^Sitemap: (\S+)/m)?.[1];
+  assert.equal(sitemap, `${ORIGIN}sitemap.xml`, "robots.txt sitemap");
+  assert.match(readFileSync(join(site, "sitemap.xml"), "utf8"), new RegExp(`<loc>${ORIGIN}</loc>`));
+});
+
 // ---------------------------------------------------------------- browser
 
 const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });

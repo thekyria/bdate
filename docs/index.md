@@ -1,5 +1,6 @@
 ---
 title: Byzantine time reckoning
+description: "bdate prints today's date as a Byzantine would have: Julian date, Anno Mundi, indiction, Greek day and month names, and seasonal hours."
 ---
 
 # bdate — Byzantine time reckoning
@@ -26,7 +27,7 @@ You can read these pages in any order. Each page explains the historical
 convention, gives the formula `bdate` uses, and works through an example you
 can reproduce.
 
-**[Open the live clock →](clock/)** It shows the current seasonal hour on a
+**[Open the live clock →](https://bdate.app/)** It shows the current seasonal hour on a
 dial, for Constantinople or anywhere else, and gives you code to embed it in
 your own page.
 

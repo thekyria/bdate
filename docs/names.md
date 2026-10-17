@@ -1,5 +1,6 @@
 ---
 title: Days and months
+description: "Byzantine Greek names of the weekdays and months as bdate prints them, with the Greek, their meanings and English equivalents."
 ---
 
 # Days and months

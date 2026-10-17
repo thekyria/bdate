@@ -1,5 +1,6 @@
 ---
 title: Seasonal hours
+description: "Seasonal (unequal) hours: Byzantine days and nights each split into twelve hours that change length with the seasons, and the four night watches."
 ---
 
 # Seasonal (unequal) hours
