@@ -1,13 +1,14 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
+// Kotlin is built in to the Android Gradle Plugin since 9.0; the root build
+// file only pins the Kotlin version.
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android")
 }
 
 android {
     namespace = "app.bdate"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "app.bdate"
@@ -51,10 +52,10 @@ kotlin {
 }
 
 dependencies {
-    implementation("com.google.androidbrowserhelper:androidbrowserhelper:2.5.0")
-    implementation("androidx.work:work-runtime-ktx:2.9.1")
+    implementation("com.google.androidbrowserhelper:androidbrowserhelper:2.7.4")
+    implementation("androidx.work:work-runtime-ktx:2.12.0")
 
     testImplementation("junit:junit:4.13.2")
     // Android's org.json is a stub in local unit tests; this is the real one.
-    testImplementation("org.json:json:20240303")
+    testImplementation("org.json:json:20260814")
 }
