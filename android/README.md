@@ -7,7 +7,8 @@ home-screen widget.
   [Trusted Web Activity](https://developer.chrome.com/docs/android/trusted-web-activity).
   It shares the web app's code and updates, so nothing in it is Android-only.
 - **The widget** shows the current seasonal hour, the Julian date and the year
-  for one of the clock's places. Tapping it opens the clock at that place.
+  for your location or one of the clock's places. Tapping it opens the clock
+  there.
 
 ## Install
 
@@ -23,7 +24,7 @@ The installed PWA is a separate app and can stay or go.
 ## The widget
 
 Long-press the home screen, pick **Widgets**, then **Byzantine hour**, and
-choose a place. The widget:
+choose **Use my location** or a place. The widget:
 
 - fetches 48 hours of hours and dates from
   [`/api/v1/schedule`](https://bdate.app/docs/usage.html#schedule) when it is
@@ -32,6 +33,11 @@ choose a place. The widget:
 - redraws itself at each hour boundary and at midnight, from that schedule,
   without the network;
 - is in Greek when the phone is.
+
+**Use my location** asks for approximate location once, reads it while the
+setup screen is open, and keeps it rounded to 0.01° (about a kilometre). The
+widget doesn't follow the phone afterwards: to update it, reconfigure the
+widget (long-press it on Android 12 and later) or add it again.
 
 To change hour on the minute, it needs **Alarms & reminders** (Settings →
 Apps → Byzantine Clock). Android 12 and 13 allow it by default; from Android

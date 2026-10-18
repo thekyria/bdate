@@ -66,6 +66,19 @@ class ScheduleTest {
     }
 
     @Test
+    fun yourLocationIsRoundedAndOpensTheClockThere() {
+        val here = Places.here(37.97191, 23.72643, "Europe/Athens")
+        assertEquals(37.97 to 23.73, here.lat to here.lon)
+        assertEquals("Your location", Texts.place(here, greek = false))
+        assertEquals("https://bdate.app/?lat=37.97&lon=23.73&mine=1&tz=Europe%2FAthens", Places.clockUrl(here))
+        assertEquals("https://bdate.app/?place=athens", Places.clockUrl(Places.byKey("athens")))
+        assertEquals(
+            "https://bdate.app/api/v1/schedule?date=2026-10-18T20:00:30Z&tz=Europe%2FAthens&lat=37.97&lon=23.73&span=48",
+            Schedule.url(here, OffsetDateTime.parse("2026-10-18T21:00:30Z").toInstant().toEpochMilli()),
+        )
+    }
+
+    @Test
     fun unknownPlacesFallBackToConstantinople() {
         assertEquals("constantinople", Places.byKey("atlantis").key)
         assertEquals("constantinople", Places.byKey(null).key)
