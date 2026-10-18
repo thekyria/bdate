@@ -88,8 +88,7 @@ class BdateWidget : AppWidgetProvider() {
 
         /** Opens the clock (the web app, in the app's Trusted Web Activity) at the widget's place. */
         private fun openClock(c: Context, place: Place): PendingIntent {
-            val url = Uri.parse("https://bdate.app/?place=${place.key}")
-            val intent = Intent(Intent.ACTION_VIEW, url, c, LauncherActivity::class.java)
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(Places.clockUrl(place)), c, LauncherActivity::class.java)
             return PendingIntent.getActivity(c, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         }
 
