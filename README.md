@@ -24,8 +24,9 @@ copies `bdate.js` in, builds the docs into `docs/clock/docs/` with Jekyll and
 serves `docs/clock/` as the site root.
 
 🔌 **Web API:** <https://bdate.app/api/v1/date> returns `bdate --json`'s output;
-it takes `date`, `tz`, `lat`, `lon` and `hours=0` (see
-[Usage](https://bdate.app/docs/usage.html#web-api)).
+it takes `date`, `tz`, `lat`, `lon` and `hours=0`. <https://bdate.app/api/v1/schedule>
+returns the same over the next 24 hours, as a list of segments, for widgets
+(see [Usage](https://bdate.app/docs/usage.html#web-api)).
 
 The clock and the docs are in English and Greek (flags at the top right). The
 command line and the API print the names in romanised form.
@@ -52,7 +53,7 @@ matches them.
 ```
 uvx --from ./python bdate          # command line
 cd js && npm test                  # JS port tests (Node ≥ 18, no dependencies)
-node --test tests/api/date.test.mjs   # web API
+node --test tests/api/*.test.mjs     # web API
 cd tests/clock && npm ci && npx playwright install chromium && npm test   # clock app
 ```
 

@@ -82,3 +82,23 @@ without an offset is read in `tz`, or in UTC. Bad input gets a `400` response
 with an `error` message. Before 1970 or so, time zones fall back to local mean
 time (Istanbul's is `+01:55`), so for old dates you may prefer an explicit
 offset such as `+02:00`.
+
+### Schedule
+
+`https://bdate.app/api/v1/schedule` gives the same reckoning over a stretch of
+time, for widgets and other clients that cannot run the calculation
+themselves. Fetch it once or twice a day and show the segment that contains
+the current time:
+
+```
+$ curl 'https://bdate.app/api/v1/schedule?date=2026-10-18T10:00&tz=Europe/Athens&lat=37.98&lon=23.73'
+{"from":"2026-10-18T10:00:00+03:00","to":"2026-10-19T10:23:26+03:00","lat":37.98,"lon":23.73,
+ "segments":[{"from":"2026-10-18T10:00:00+03:00","to":"2026-10-18T10:23:02+03:00","julian_year":2026, …, "text":"…, 3rd hour of the day"}, …]}
+```
+
+It takes the same parameters as `/api/v1/date`, plus `span`: the hours to
+cover from `date`, from 1 to 168 (default 24). Each segment has `from`, `to`
+and the fields `/api/v1/date` returns at any moment in between (without
+`gregorian`, `lat` and `lon`). A new segment starts at each seasonal-hour
+boundary, at midnight and when `tz` changes its offset. The first segment
+starts at `date` and the last one ends at or just after `date` + `span`.

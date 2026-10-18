@@ -18,7 +18,7 @@ import { byzantine, formatDefault, DEFAULT_LAT, DEFAULT_LON } from "../../js/src
 const OFFSET = /T.*(Z|[+-]\d{2}(:?\d{2})?)$/i;
 
 /** Minutes east of UTC for IANA zone `tz` at `date`; throws on an unknown zone. */
-function offsetMinutes(date, tz) {
+export function offsetMinutes(date, tz) {
   const name = new Intl.DateTimeFormat("en-US", { timeZone: tz, timeZoneName: "longOffset" })
     .formatToParts(date)
     .find((p) => p.type === "timeZoneName").value; // "GMT+03:00" or "GMT"
@@ -26,7 +26,7 @@ function offsetMinutes(date, tz) {
   return m ? (m[1] === "-" ? -1 : 1) * (Number(m[2]) * 60 + Number(m[3] || 0)) : 0;
 }
 
-function number(value, name, limit) {
+export function number(value, name, limit) {
   if (value === undefined || value === "") return undefined;
   const n = Number(value);
   if (!Number.isFinite(n) || Math.abs(n) > limit) throw new Error(`${name} must be a number between -${limit} and ${limit}`);

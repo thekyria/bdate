@@ -25,8 +25,9 @@ Kyriakē, 21 Septembrios 7535 AM (Julian 2026-09-21), indiction 5, 6th hour of t
 `docs/clock/` ως ρίζα του ιστότοπου.
 
 🔌 **Web API:** το <https://bdate.app/api/v1/date> επιστρέφει την έξοδο του `bdate --json`·
-δέχεται `date`, `tz`, `lat`, `lon` και `hours=0` (δείτε τη
-[Χρήση](https://bdate.app/docs/el/usage.html#web-api)).
+δέχεται `date`, `tz`, `lat`, `lon` και `hours=0`. Το <https://bdate.app/api/v1/schedule>
+δίνει το ίδιο για τις επόμενες 24 ώρες, ως λίστα διαστημάτων, για widgets
+(δείτε τη [Χρήση](https://bdate.app/docs/el/usage.html#web-api)).
 
 Το ρολόι και η τεκμηρίωση υπάρχουν στα αγγλικά και στα ελληνικά (σημαίες πάνω
 δεξιά). Η γραμμή εντολών και το API τυπώνουν τα ονόματα σε λατινική μεταγραφή.
@@ -53,7 +54,7 @@ Python αποτυγχάνουν όσο τα fixtures είναι παλιά, κα
 ```
 uvx --from ./python bdate          # γραμμή εντολών
 cd js && npm test                  # δοκιμές της έκδοσης JS (Node ≥ 18, χωρίς εξαρτήσεις)
-node --test tests/api/date.test.mjs   # web API
+node --test tests/api/*.test.mjs     # web API
 cd tests/clock && npm ci && npx playwright install chromium && npm test   # ρολόι
 ```
 
