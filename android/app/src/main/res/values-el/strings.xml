@@ -5,6 +5,10 @@
     <string name="widget_name">Βυζαντινή ώρα</string>
     <string name="widget_description">Η καιρική ώρα, η ιουλιανή ημερομηνία και το έτος για έναν τόπο, από το bdate.app.</string>
     <string name="choose_place">Τόπος</string>
+    <string name="locate">Η τοποθεσία μου</string>
+    <string name="finding">Αναζήτηση της τοποθεσίας σας…</string>
+    <string name="denied">Η τοποθεσία δεν δόθηκε. Διαλέξτε έναν τόπο από τη λίστα.</string>
+    <string name="no_location">Η τοποθεσία σας δεν βρέθηκε. Διαλέξτε έναν τόπο από τη λίστα.</string>
     <string name="waiting">Αναμονή για το bdate.app…</string>
     <string name="preview_hour">6η ώρα της ημέρας</string>
     <string name="preview_day">Κυριακή, 5 Οκτωβρίου</string>

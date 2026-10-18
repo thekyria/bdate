@@ -5,6 +5,10 @@
     <string name="widget_name">Byzantine hour</string>
     <string name="widget_description">The seasonal hour, Julian date and year for a place, from bdate.app.</string>
     <string name="choose_place">Place</string>
+    <string name="locate">Use my location</string>
+    <string name="finding">Finding your location…</string>
+    <string name="denied">"Location wasn't shared. Pick a place from the list instead."</string>
+    <string name="no_location">"Couldn't find your location. Pick a place from the list instead."</string>
     <string name="waiting">Waiting for bdate.app…</string>
     <string name="preview_hour">6th hour of the day</string>
     <string name="preview_day">Kyriakē, 5 Oktōbrios</string>

@@ -1,5 +1,8 @@
 package app.bdate
 
+import java.net.URLEncoder
+import kotlin.math.roundToLong
+
 /** A place the widget can show, with the time zone its calendar date is read in. */
 data class Place(
     val key: String,
@@ -27,5 +30,25 @@ object Places {
 
     val DEFAULT = ALL.first()
 
+    /** The key of a widget that shows the phone's location, kept by Store.setHere. */
+    const val HERE = "here"
+
     fun byKey(key: String?): Place = ALL.firstOrNull { it.key == key } ?: DEFAULT
+
+    /**
+     * The phone's location, rounded to 0.01° (about a kilometre): plenty for
+     * sunrise and sunset, and all that is kept or sent to bdate.app.
+     */
+    fun here(lat: Double, lon: Double, tz: String) =
+        Place(HERE, "Your location", "Η τοποθεσία σας", round(lat), round(lon), tz)
+
+    /** The clock at `place`, in the form docs/clock/index.html reads (placeFrom). */
+    fun clockUrl(place: Place): String =
+        if (place.key == HERE) {
+            "https://bdate.app/?lat=${place.lat}&lon=${place.lon}&mine=1&tz=${URLEncoder.encode(place.tz, "UTF-8")}"
+        } else {
+            "https://bdate.app/?place=${place.key}"
+        }
+
+    private fun round(x: Double) = (x * 100).roundToLong() / 100.0
 }

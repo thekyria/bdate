@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Only when "Use my location" is picked for a widget, and only while
+         its setup screen is open. -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-feature
+        android:name="android.hardware.location"
+        android:required="false" />
     <!-- Lets the widget change hour on time. Without it (the default on
          Android 14) Android may redraw it up to 10 minutes late. -->
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />

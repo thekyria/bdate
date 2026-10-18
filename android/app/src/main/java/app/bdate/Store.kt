@@ -8,10 +8,32 @@ import android.content.Context
 object Store {
     private fun prefs(c: Context) = c.getSharedPreferences("bdate", Context.MODE_PRIVATE)
 
-    fun place(c: Context, widgetId: Int): Place = Places.byKey(prefs(c).getString("widget.$widgetId", null))
+    fun place(c: Context, widgetId: Int): Place {
+        val key = prefs(c).getString("widget.$widgetId", null)
+        return if (key == Places.HERE) here(c) ?: Places.DEFAULT else Places.byKey(key)
+    }
 
     fun setPlace(c: Context, widgetId: Int, place: Place) {
         prefs(c).edit().putString("widget.$widgetId", place.key).apply()
+    }
+
+    /** The location picked last in ConfigureActivity, or null if none was. */
+    fun here(c: Context): Place? {
+        val p = prefs(c)
+        val lat = p.getString("here.lat", null)?.toDoubleOrNull() ?: return null
+        val lon = p.getString("here.lon", null)?.toDoubleOrNull() ?: return null
+        return Places.here(lat, lon, p.getString("here.tz", null) ?: Places.DEFAULT.tz)
+    }
+
+    /** Keeps a new location for the widgets that show it; their old schedule no longer applies. */
+    fun setHere(c: Context, here: Place) {
+        prefs(c).edit()
+            .putString("here.lat", here.lat.toString())
+            .putString("here.lon", here.lon.toString())
+            .putString("here.tz", here.tz)
+            .remove("schedule.${Places.HERE}")
+            .remove("fetched.${Places.HERE}")
+            .apply()
     }
 
     fun forget(c: Context, widgetId: Int) {
