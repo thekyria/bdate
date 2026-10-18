@@ -107,8 +107,9 @@ function jdnToGregorian(jdn) {
 const ZENITH_OFFICIAL = 90.833;
 
 /**
- * UTC hour (0-24 float) of sunrise/sunset on the UTC date with Julian Day
- * Number `jdn`, or null if the sun never rises/sets that day.
+ * Sunrise/sunset of the day with Julian Day Number `jdn` at longitude `lon`,
+ * in hours from 00:00 UTC on that date (below 0 or above 24 when the local day
+ * straddles a UTC date), or null if the sun never rises/sets that day.
  */
 function sunEventUtc(jdn, lat, lon, rising) {
   const [y] = jdnToGregorian(jdn);
@@ -133,13 +134,16 @@ function sunEventUtc(jdn, lat, lon, rising) {
   if (rising) H = 360.0 - H;
   H /= 15.0;
 
-  const T = H + RA - 0.06571 * t - 6.622;
-  return mod(T - lngHour, 24.0);
+  // Local mean time, kept in the morning (sunrise) or evening (sunset) of
+  // the day. Wrapping the UTC hour instead could land on the wrong day.
+  let T = H + RA - 0.06571 * t - 6.622;
+  T = rising ? mod(T + 6, 24.0) - 6 : mod(T - 6, 24.0) + 6;
+  return T - lngHour;
 }
 
 /**
- * [sunrise, sunset] as epoch milliseconds (or null) for the UTC calendar date
- * with Julian Day Number `jdn`.
+ * [sunrise, sunset] as epoch milliseconds (or null) for the day with Julian
+ * Day Number `jdn` at longitude `lon` (local mean time).
  */
 function sunEventsMs(jdn, lat, lon) {
   const base = (jdn - UNIX_EPOCH_JDN) * DAY_MS;
@@ -147,7 +151,10 @@ function sunEventsMs(jdn, lat, lon) {
   return [toMs(sunEventUtc(jdn, lat, lon, true)), toMs(sunEventUtc(jdn, lat, lon, false))];
 }
 
-/** [sunrise, sunset] as Date objects (or null) for the UTC date of `day`. */
+/**
+ * [sunrise, sunset] as Date objects (or null) for the UTC date of `day`, taken
+ * as the day at longitude `lon`: either may fall on the UTC date before or after.
+ */
 export function sunEvents(day, lat, lon) {
   const jdn = div(day.getTime(), DAY_MS) + UNIX_EPOCH_JDN;
   return sunEventsMs(jdn, lat, lon).map((ms) => (ms === null ? null : new Date(ms)));
@@ -182,25 +189,23 @@ function isoAt(ms, tzOffset, withSeconds) {
 
 /** [start, end, period] of the day or night (epoch ms) containing `nowMs`, or null. */
 function bracket(nowMs, lat, lon) {
-  const today = div(nowMs, DAY_MS) + UNIX_EPOCH_JDN;
-  let [rise, sset] = sunEventsMs(today, lat, lon);
+  // The day at this longitude (local mean time), not the UTC date.
+  const today = div(nowMs + (lon / 15) * HOUR_MS, DAY_MS) + UNIX_EPOCH_JDN;
+  const [rise, sset] = sunEventsMs(today, lat, lon);
   if (rise === null || sset === null) return null;
 
-  // The almanac gives events for the UTC calendar date; pick the
-  // sunrise/sunset pair that brackets `now`.
-  if (sset < rise) sset += DAY_MS;
-
-  if (rise <= nowMs && nowMs < sset) return [rise, sset, "day"];
-  if (nowMs >= sset) {
-    let [nrise] = sunEventsMs(today + 1, lat, lon);
-    if (nrise === null) return null;
-    if (nrise < sset) nrise += DAY_MS;
-    return [sset, nrise, "night"];
+  // Sunrises and sunsets from the day before to the day after, in order;
+  // the pair around `now` is the day or night it falls in.
+  const events = [];
+  for (const jdn of [today - 1, today, today + 1]) {
+    const [r, s] = sunEventsMs(jdn, lat, lon);
+    if (r !== null) events.push([r, "rise"]);
+    if (s !== null) events.push([s, "set"]);
   }
-  let [, pset] = sunEventsMs(today - 1, lat, lon);
-  if (pset === null) return null;
-  if (pset > rise) pset -= DAY_MS;
-  return [pset, rise, "night"];
+  events.sort((a, b) => a[0] - b[0]);
+  const i = events.findIndex((e) => e[0] > nowMs);
+  if (i < 1 || events[i - 1][1] === events[i][1]) return null;
+  return [events[i - 1][0], events[i][0], events[i - 1][1] === "rise" ? "day" : "night"];
 }
 
 /**

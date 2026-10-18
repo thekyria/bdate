@@ -41,9 +41,11 @@ function nextChange(t, { lat, lon, withHours, offsetAt }) {
   const midnight = (Math.floor((t + off) / DAY_MS) + 1) * DAY_MS;
   const candidates = [midnight - offsetAt(midnight - off) * 60000];
   if (withHours) {
-    // bdate.js picks the day or night from the sunrise and sunset of the UTC
-    // date, so its answer can also change at UTC midnight.
-    candidates.push((Math.floor(t / DAY_MS) + 1) * DAY_MS);
+    // bdate.js starts from the sunrise and sunset of the day at this
+    // longitude (local mean time), so near the poles its answer can also
+    // change at local mean midnight.
+    const solar = (lon / 15) * HOUR_MS;
+    candidates.push((Math.floor((t + solar) / DAY_MS) + 1) * DAY_MS - solar);
     const p = periodBounds(new Date(t), lat, lon);
     if (p) {
       const start = p.start.getTime();
@@ -53,8 +55,8 @@ function nextChange(t, { lat, lon, withHours, offsetAt }) {
       // Rounding can put t on the period's last millisecond; step past it.
       candidates.push(Math.max(t + 1, Math.ceil(start + (h * len) / 12)));
     } else {
-      // Polar day or night, which can end at a sunrise or sunset of this UTC date.
-      for (const d of sunEvents(new Date(t), lat, lon)) if (d) candidates.push(d.getTime());
+      // Polar day or night, which can end at a sunrise or sunset of this day.
+      for (const d of sunEvents(new Date(t + solar), lat, lon)) if (d) candidates.push(d.getTime());
     }
   }
   let next = Math.min(...candidates.filter((c) => c > t));

@@ -64,3 +64,22 @@ test("periodBounds brackets now and chains day to night", () => {
   assert.equal(night.start.getTime(), day.end.getTime());
   assert.equal(periodBounds(new Date("2026-12-21T12:00Z"), 80, 0), null);
 });
+
+test("periodBounds fits every longitude", () => {
+  // At 40°N a day or night lasts 8.5 to 15.5 hours, whichever UTC date the
+  // local one straddles; the next period starts where this one ends.
+  const start = Date.parse("2026-01-01T00:00Z");
+  for (let lon = -180; lon <= 180; lon += 15) {
+    for (let step = 0; step < 366 * 24; step += 23) {
+      const now = new Date(start + step * 3600000);
+      const p = periodBounds(now, 40, lon);
+      const where = `${lon} ${now.toISOString()}`;
+      assert.ok(p.start <= now && now < p.end, where);
+      const hours = (p.end - p.start) / 3600000;
+      assert.ok(hours >= 8.5 && hours <= 15.5, `${where}: ${hours} hours`);
+      const next = periodBounds(new Date(p.end.getTime() + 1), 40, lon);
+      assert.notEqual(next.period, p.period, where);
+      assert.equal(next.start.getTime(), p.end.getTime(), where);
+    }
+  }
+});
