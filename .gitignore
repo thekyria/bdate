@@ -234,3 +234,5 @@ vendor/bundle/
 # Written at build time by scripts/write-version.mjs
 docs/clock/version.json
 docs/_data/version.json
+
+*.jks
