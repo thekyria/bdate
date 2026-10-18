@@ -5,3 +5,4 @@
 # Generated files: collapsed in diffs.
 python/uv.lock linguist-generated=true
 fixtures/cases.json linguist-generated=true
+Gemfile.lock linguist-generated=true

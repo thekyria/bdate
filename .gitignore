@@ -222,8 +222,14 @@ __marimo__/
 # Node
 node_modules/
 
-# Copied in by the Pages workflow (see .github/workflows/pages.yml)
+# Copied in at build time (see vercel.json)
 docs/clock/bdate.js
+
+# The docs, built by Jekyll into the clock site (see vercel.json)
+docs/clock/docs/
+docs/.jekyll-cache/
+.bundle/
+vendor/bundle/
 
 # Written at build time by scripts/write-version.mjs
 docs/clock/version.json

@@ -1,15 +1,20 @@
 title: bdate
 description: "date(1), but the way a Byzantine would have reckoned it — the theory behind it."
 lang: en
-url: https://thekyria.github.io
-baseurl: /bdate
+url: https://bdate.app
+baseurl: /docs
+repository: thekyria/bdate
 theme: jekyll-theme-cayman
 markdown: kramdown
 kramdown:
   math_engine: null
+# The Cayman theme's Sass predates the module system; its warnings are not ours.
+sass:
+  quiet_deps: true
+  silence_deprecations: [import]
 
 # jekyll-seo-tag fills in the canonical link, Open Graph and structured data
-# (the Cayman theme calls it); jekyll-sitemap writes /bdate/sitemap.xml.
+# (the Cayman theme calls it); jekyll-sitemap writes /docs/sitemap.xml.
 plugins:
   - jekyll-relative-links
   - jekyll-seo-tag
@@ -28,19 +33,17 @@ defaults:
   - scope:
       path: ""
     values:
-      image: /clock/social-image.png
+      layout: default
+      image: https://bdate.app/social-image.png
   # Greek translations of the pages live under el/.
   - scope:
       path: el
     values:
       lang: el
-  # The clock's canonical home is https://bdate.app/, which has its own sitemap.
-  - scope:
-      path: clock
-    values:
-      sitemap: false
-  # Google Search Console ownership check; keep it out of the sitemap.
-  - scope:
-      path: googleca204926ec3d65c5.html
-    values:
-      sitemap: false
+
+# Built into docs/clock/docs/, so bdate.app serves these pages under /docs/
+# (see vercel.json). The clock is the rest of bdate.app; the Search Console
+# file is for the old GitHub Pages address (see .github/workflows/pages.yml).
+exclude:
+  - clock
+  - googleca204926ec3d65c5.html

@@ -7,7 +7,7 @@ $ bdate
 Kyriakē, 21 Septembrios 7535 AM (Julian 2026-09-21), indiction 5, 6th hour of the day
 ```
 
-📖 **Documentation & theory:** <https://thekyria.github.io/bdate/>
+📖 **Documentation & theory:** <https://bdate.app/docs/>
 (source in [`docs/`](docs/))
 
 ## What it computes

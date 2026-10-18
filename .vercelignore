@@ -1,5 +1,5 @@
-# Vercel serves docs/clock (see vercel.json); its build only needs
-# js/src/bdate.js besides. Everything else is repo and dev tooling.
+# Vercel serves docs/clock (see vercel.json); its build needs js/src/bdate.js
+# and the Jekyll docs in docs/ besides. Everything else is repo and dev tooling.
 .github
 .editorconfig
 .editorconfig-checker.json
@@ -11,5 +11,5 @@ fixtures
 tests
 js/test
 docs/.sass-cache
-docs/*.md
-docs/_config.yml
+docs/.jekyll-cache
+docs/clock/docs

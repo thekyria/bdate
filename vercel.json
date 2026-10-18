@@ -1,7 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
-  "buildCommand": "cp js/src/bdate.js docs/clock/bdate.js && node scripts/write-version.mjs",
+  "installCommand": "bundle install",
+  "buildCommand": "cp js/src/bdate.js docs/clock/bdate.js && node scripts/write-version.mjs && bundle exec jekyll build -s docs -d docs/clock/docs",
   "outputDirectory": "docs/clock",
   "headers": [
     {
