@@ -1,8 +1,9 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
+// Kotlin is built in to the Android Gradle Plugin since 9.0; the root build
+// file only pins the Kotlin version.
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android")
 }
 
 android {
