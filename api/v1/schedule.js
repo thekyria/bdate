@@ -92,8 +92,7 @@ export default function handler(req, res) {
   } catch (err) {
     return res.status(400).json({ error: err.message });
   }
-  const { now, lat, lon, withHours, tzOffset } = args;
-  const tz = (Array.isArray(query.tz) ? query.tz[0] : query.tz) || null;
+  const { now, lat, lon, withHours, tzOffset, tz } = args;
   const offsetAt = tz ? (ms) => offsetMinutes(new Date(ms), tz) : () => tzOffset;
   // The same ISO form as `gregorian` in /api/v1/date.
   const iso = (ms) => byzantine(new Date(ms), { withHours: false, tzOffset: offsetAt(ms) }).gregorian;

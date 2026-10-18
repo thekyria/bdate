@@ -21,9 +21,9 @@ Options for `byzantine(date, options)`:
 | `withHours` | `true` | Compute the seasonal hour |
 | `tzOffset` | the runtime's local offset | Minutes east of UTC used for the calendar date and ISO strings |
 
-Also exported: `seasonalHour`, `sunEvents`, `gregorianToJdn`, `jdnToJulian`,
+Also exported: `seasonalHour`, `periodBounds`, `sunEvents`, `gregorianToJdn`, `jdnToJulian`,
 `gregorianToJulian`, `annoMundi`, `indiction`, `weekdayIndex`, `ordinal`,
-`WEEKDAYS`, `MONTHS`, `DEFAULT_LAT`, `DEFAULT_LON`.
+`WEEKDAYS`, `MONTHS`, `DEFAULT_LAT`, `DEFAULT_LON`, `VERSION`.
 
 ## Tests
 
