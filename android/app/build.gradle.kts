@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "app.bdate"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "app.bdate"
