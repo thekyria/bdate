@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://bdate.app/sitemap.xml
+Sitemap: https://bdate.app/docs/sitemap.xml

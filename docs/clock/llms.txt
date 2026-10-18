@@ -14,14 +14,14 @@ Sunrise and sunset, which set the seasonal hours, are approximate (within a few 
 
 ## Docs
 
-- [Overview](https://thekyria.github.io/bdate/): what bdate prints and why
-- [Usage](https://thekyria.github.io/bdate/usage.html): command-line options, JSON fields, the web API and the JavaScript port
-- [The Julian calendar](https://thekyria.github.io/bdate/calendar.html): leap years, drift from the Gregorian calendar, conversion
-- [Anno Mundi](https://thekyria.github.io/bdate/anno-mundi.html): the Byzantine world era and its September new year
-- [The indiction](https://thekyria.github.io/bdate/indiction.html): the 15-year cycle used to date documents
-- [Days and months](https://thekyria.github.io/bdate/names.html): the Greek weekday and month names
-- [Seasonal hours](https://thekyria.github.io/bdate/hours.html): unequal hours and the four night watches
-- [Ελληνικά](https://thekyria.github.io/bdate/el/): the same pages in Greek
+- [Overview](https://bdate.app/docs/): what bdate prints and why
+- [Usage](https://bdate.app/docs/usage.html): command-line options, JSON fields, the web API and the JavaScript port
+- [The Julian calendar](https://bdate.app/docs/calendar.html): leap years, drift from the Gregorian calendar, conversion
+- [Anno Mundi](https://bdate.app/docs/anno-mundi.html): the Byzantine world era and its September new year
+- [The indiction](https://bdate.app/docs/indiction.html): the 15-year cycle used to date documents
+- [Days and months](https://bdate.app/docs/names.html): the Greek weekday and month names
+- [Seasonal hours](https://bdate.app/docs/hours.html): unequal hours and the four night watches
+- [Ελληνικά](https://bdate.app/docs/el/): the same pages in Greek
 
 ## Source
 

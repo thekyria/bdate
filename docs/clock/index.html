@@ -35,7 +35,7 @@
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
   "inLanguage": "en",
   "author": { "@type": "Person", "name": "thekyria", "url": "http://thekyria.com" },
-  "sameAs": ["https://github.com/thekyria/bdate", "https://thekyria.github.io/bdate/"]
+  "sameAs": ["https://github.com/thekyria/bdate"]
 }
 </script>
 <meta name="theme-color" content="#f3f0f4" media="(prefers-color-scheme: light)">
@@ -301,10 +301,10 @@
   <noscript>
     <p>This clock shows the current hour as a Byzantine would have reckoned it, with
     twelve unequal hours of day and twelve of night, and needs JavaScript to run.
-    Read <a href="https://thekyria.github.io/bdate/hours.html">how seasonal hours work</a>.</p>
+    Read <a href="docs/hours.html">how seasonal hours work</a>.</p>
     <p lang="el">Αυτό το ρολόι δείχνει την τρέχουσα ώρα όπως θα τη μετρούσε ένας Βυζαντινός,
     με δώδεκα άνισες ώρες ημέρας και δώδεκα νύχτας, και χρειάζεται JavaScript.
-    Διαβάστε <a href="https://thekyria.github.io/bdate/el/hours.html">πώς λειτουργούν οι καιρικές ώρες</a>.</p>
+    Διαβάστε <a href="docs/el/hours.html">πώς λειτουργούν οι καιρικές ώρες</a>.</p>
   </noscript>
   <svg id="dial" viewBox="-224 -224 448 448" role="img" aria-labelledby="dial-title">
     <title id="dial-title" data-i18n="dial">Byzantine seasonal-hour clock</title>
@@ -344,7 +344,11 @@
       <p data-i18n-html="aboutText">
         Computed in your browser by <a href="https://github.com/thekyria/bdate">bdate</a>.
         Sunrise and sunset are approximate to a few minutes.
-        <a href="https://thekyria.github.io/bdate/hours.html">How seasonal hours work</a>.
+        <a href="docs/hours.html">How seasonal hours work</a>.
+      </p>
+      <p data-i18n-html="docsText">
+        <a href="docs/">Documentation</a>: the calendar, the era, the indiction,
+        the names and the hours, and how to use bdate.
       </p>
     </section>
     <section>
@@ -420,7 +424,8 @@ const I18N = {
     denied: "Location wasn't shared. Pick a place from the list instead.",
     menu: "Menu",
     about: "About",
-    aboutText: 'Computed in your browser by <a href="https://github.com/thekyria/bdate">bdate</a>. Sunrise and sunset are approximate to a few minutes. <a href="https://thekyria.github.io/bdate/hours.html">How seasonal hours work</a>.',
+    aboutText: 'Computed in your browser by <a href="https://github.com/thekyria/bdate">bdate</a>. Sunrise and sunset are approximate to a few minutes. <a href="docs/hours.html">How seasonal hours work</a>.',
+    docsText: '<a href="docs/">Documentation</a>: the calendar, the era, the indiction, the names and the hours, and how to use bdate.',
     embed: "Embed",
     embedText: "Show this clock on your own page:",
     embedTitle: "Byzantine clock",
@@ -455,7 +460,8 @@ const I18N = {
     denied: "Η τοποθεσία δεν δόθηκε. Διαλέξτε έναν τόπο από τη λίστα.",
     menu: "Μενού",
     about: "Σχετικά",
-    aboutText: 'Υπολογίζεται στον περιηγητή σας από το <a href="https://github.com/thekyria/bdate">bdate</a>. Η ανατολή και η δύση του ηλίου είναι ακριβείς με απόκλιση λίγων λεπτών. <a href="https://thekyria.github.io/bdate/el/hours.html">Πώς λειτουργούν οι καιρικές ώρες</a>.',
+    aboutText: 'Υπολογίζεται στον περιηγητή σας από το <a href="https://github.com/thekyria/bdate">bdate</a>. Η ανατολή και η δύση του ηλίου είναι ακριβείς με απόκλιση λίγων λεπτών. <a href="docs/el/hours.html">Πώς λειτουργούν οι καιρικές ώρες</a>.',
+    docsText: '<a href="docs/el/">Τεκμηρίωση</a>: το ημερολόγιο, το έτος, η ινδικτιώνα, τα ονόματα και οι ώρες, και πώς χρησιμοποιείται το bdate.',
     embed: "Ενσωμάτωση",
     embedText: "Βάλτε αυτό το ρολόι στη δική σας σελίδα:",
     embedTitle: "Βυζαντινό ρολόι",

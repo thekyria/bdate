@@ -2,7 +2,7 @@
 // (fetched by the clock at bdate.app) and docs/_data/version.json (read by
 // the Jekyll docs layout). The sites are deployed continuously, so the
 // deployed git commit acts as the version. Values come from Vercel's system
-// environment variables or, for the Pages build, GitHub Actions'. Without a
+// environment variables or, when run in GitHub Actions, its own. Without a
 // commit nothing is written and the footers leave the version out.
 
 import { mkdirSync, writeFileSync } from "node:fs";

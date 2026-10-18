@@ -6,7 +6,7 @@
 // CHROMIUM_PATH points Playwright at an already installed Chromium.
 
 import assert from "node:assert/strict";
-import { cpSync, mkdtempSync, readFileSync, existsSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, mkdirSync, mkdtempSync, readFileSync, existsSync, rmSync, writeFileSync } from "node:fs";
 import { createServer } from "node:http";
 import { tmpdir } from "node:os";
 import { extname, join, resolve } from "node:path";
@@ -67,10 +67,25 @@ const pngSize = (file) => {
   return [b.readUInt32BE(16), b.readUInt32BE(20)];
 };
 
-await check("vercel.json builds and serves docs/clock", () => {
+await check("vercel.json builds and serves docs/clock, with the docs under /docs/", () => {
   const v = JSON.parse(readFileSync(join(ROOT, "vercel.json"), "utf8"));
   assert.equal(v.outputDirectory, "docs/clock");
   assert.match(v.buildCommand, /js\/src\/bdate\.js docs\/clock\/bdate\.js/);
+  assert.match(v.buildCommand, /jekyll build -s docs -d docs\/clock\/docs/);
+});
+
+// The docs are built by Jekyll only on Vercel, so check the links against their sources.
+await check("About links to the docs, in both languages", () => {
+  const html = readFileSync(join(site, "index.html"), "utf8");
+  const links = [...html.matchAll(/href="(docs\/[^"#]*)/g)].map((m) => m[1]);
+  for (const lang of ["", "el/"]) {
+    assert.ok(links.includes(`docs/${lang}`), `no link to docs/${lang}`);
+    assert.ok(links.includes(`docs/${lang}hours.html`), `no link to docs/${lang}hours.html`);
+  }
+  for (const link of links) {
+    const md = link.replace(/^docs\//, "").replace(/(^|\/)$/, "$1index.html").replace(/\.html$/, ".md");
+    assert.ok(existsSync(join(ROOT, "docs", md)), `${link} has no docs/${md}`);
+  }
 });
 
 await check("manifest has what browsers need to install the app", () => {
@@ -205,6 +220,11 @@ await check("installable: manifest parses and the service worker takes over", as
   const blocking = installabilityErrors.filter((e) => e.errorId !== "in-incognito");
   assert.deepEqual(blocking, [], "installability errors");
 
+  // The docs under /docs/ are a separate site, left to the network.
+  mkdirSync(join(site, "docs"), { recursive: true });
+  writeFileSync(join(site, "docs/index.html"), "<!DOCTYPE html><title>Docs</title><p>Docs");
+  await page.goto(`${BASE}docs/`);
+  assert.equal(await page.title(), "Docs");
   await ctx.setOffline(true);
   await page.goto(`${BASE}?place=rome`);
   assert.match(await page.textContent("#r-meta"), /^Rome/, "offline reload did not render");

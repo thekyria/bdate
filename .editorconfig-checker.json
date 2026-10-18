@@ -1,5 +1,5 @@
 {
-  "Exclude": ["\\.venv/", "\\.sass-cache/", "\\.png$", "uv\\.lock$"],
+  "Exclude": ["\\.venv/", "\\.sass-cache/", "\\.jekyll-cache/", "^docs/clock/docs/", "\\.png$", "uv\\.lock$"],
   "Disable": {
     "IndentSize": true
   }

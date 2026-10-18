@@ -26,6 +26,8 @@ self.addEventListener("fetch", (event) => {
   const sameOrigin = url.origin === location.origin;
   const isFont = url.hostname === "fonts.googleapis.com" || url.hostname === "fonts.gstatic.com";
   if (!sameOrigin && !isFont) return;
+  // The docs under /docs/ are a separate site; leave them to the network.
+  if (sameOrigin && url.pathname.startsWith(new URL("docs/", self.registration.scope).pathname)) return;
 
   if (req.mode === "navigate") {
     // ?place=… and other settings live in the query; any of them can use the cached page.

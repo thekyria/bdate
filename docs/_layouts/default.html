@@ -1,7 +1,10 @@
 {%- comment -%}
   The Cayman theme's layout (jekyll-theme-cayman v0.2.0), copied to add a
   language switch (English pages at /, Greek ones under /el/, with text from
-  _data/i18n.yml) and the deployed version to the footer.
+  _data/i18n.yml) and the deployed version to the footer. The site is built by
+  plain Jekyll for bdate.app/docs/, not by GitHub Pages, so the repository
+  links come from site.repository instead of site.github, and the flags are
+  the clock's, at the root of bdate.app.
   docs/_data/version.json is written at build time by scripts/write-version.mjs;
   without it the version is left out.
 {%- endcomment -%}
@@ -14,6 +17,9 @@
   {%- assign url_en = page.url -%}
   {%- assign url_el = page.url | prepend: "/el" -%}
 {%- endif -%}
+{%- assign repo_url = "https://github.com/" | append: site.repository -%}
+{%- assign owner = site.repository | split: "/" | first -%}
+{%- assign version = site.data.version -%}
 <!DOCTYPE html>
 <html lang="{{ lang }}">
   <head>
@@ -25,7 +31,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#157878">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: version.shortCommit | relative_url }}">
     <link rel="alternate" hreflang="en" href="{{ url_en | absolute_url }}">
     <link rel="alternate" hreflang="el" href="{{ url_el | absolute_url }}">
     <link rel="alternate" hreflang="x-default" href="{{ url_en | absolute_url }}">
@@ -44,31 +50,23 @@
 
     <header class="page-header" role="banner">
       <nav class="lang-switch" aria-label="{{ t.language }}">
-        <a href="{{ url_en | relative_url }}" hreflang="en" lang="en" title="English" aria-label="English"{% if lang == "en" %} aria-current="true"{% endif %}><img src="{{ '/clock/flags/gb.svg' | relative_url }}" alt="" width="28" height="14"></a>
-        <a href="{{ url_el | relative_url }}" hreflang="el" lang="el" title="Ελληνικά" aria-label="Ελληνικά"{% if lang == "el" %} aria-current="true"{% endif %}><img src="{{ '/clock/flags/gr.svg' | relative_url }}" alt="" width="21" height="14"></a>
+        <a href="{{ url_en | relative_url }}" hreflang="en" lang="en" title="English" aria-label="English"{% if lang == "en" %} aria-current="true"{% endif %}><img src="/flags/gb.svg" alt="" width="28" height="14"></a>
+        <a href="{{ url_el | relative_url }}" hreflang="el" lang="el" title="Ελληνικά" aria-label="Ελληνικά"{% if lang == "el" %} aria-current="true"{% endif %}><img src="/flags/gr.svg" alt="" width="21" height="14"></a>
       </nav>
-      <h1 class="project-name">{{ page.title | default: site.title | default: site.github.repository_name }}</h1>
-      <h2 class="project-tagline">{{ page.description | default: site.description | default: site.github.project_tagline }}</h2>
-      {% if site.github.is_project_page %}
-        <a href="{{ site.github.repository_url }}" class="btn">{{ t.github }}</a>
-      {% endif %}
-      {% if site.show_downloads %}
-        <a href="{{ site.github.zip_url }}" class="btn">Download .zip</a>
-        <a href="{{ site.github.tar_url }}" class="btn">Download .tar.gz</a>
-      {% endif %}
+      <h1 class="project-name">{{ page.title | default: site.title }}</h1>
+      <h2 class="project-tagline">{{ page.description | default: site.description }}</h2>
+      <a href="/{% if lang == "el" %}?lang=el{% endif %}" class="btn">{{ t.clock }}</a>
+      <a href="{{ repo_url }}" class="btn">{{ t.github }}</a>
     </header>
 
     <main id="content" class="main-content" role="main">
       {{ content }}
 
       <footer class="site-footer">
-        {% if site.github.is_project_page %}
-          {%- capture repo %}<a href="{{ site.github.repository_url }}">{{ site.github.repository_name }}</a>{% endcapture %}
-          {%- capture owner %}<a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a>{% endcapture %}
-          <span class="site-footer-owner">{{ t.maintained | replace: "%repo", repo | replace: "%owner", owner }}</span>
-        {% endif %}
-        <span class="site-footer-credits">{{ t.generated | replace: "%pages", '<a href="https://pages.github.com">GitHub Pages</a>' }}</span>
-        {%- assign version = site.data.version %}
+        {%- capture repo_link %}<a href="{{ repo_url }}">{{ site.repository | split: "/" | last }}</a>{% endcapture %}
+        {%- capture owner_link %}<a href="https://github.com/{{ owner }}">{{ owner }}</a>{% endcapture %}
+        <span class="site-footer-owner">{{ t.maintained | replace: "%repo", repo_link | replace: "%owner", owner_link }}</span>
+        <span class="site-footer-credits">{{ t.generated | replace: "%jekyll", '<a href="https://jekyllrb.com">Jekyll</a>' }}</span>
         {%- if version.shortCommit %}
         <span class="site-footer-version">{{ t.version }} {% if version.commitUrl %}<a href="{{ version.commitUrl }}" title="Commit {{ version.commit }}">{{ version.shortCommit }}</a>{% else %}{{ version.shortCommit }}{% endif %}</span>
         {%- endif %}
