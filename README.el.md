@@ -41,6 +41,7 @@ Kyriakē, 21 Septembrios 7535 AM (Julian 2026-09-21), indiction 5, 6th hour of t
 | [`fixtures/`](fixtures/) | Περιπτώσεις που παράγει το πακέτο Python· τις ελέγχουν και οι δύο σουίτες δοκιμών |
 | [`docs/`](docs/) | Η τεκμηρίωση (Jekyll, στο bdate.app/docs/)· το [`docs/clock/`](docs/clock/) είναι το ρολόι, η ρίζα του bdate.app |
 | [`api/`](api/) | Το web API του bdate.app, μια συνάρτηση Vercel πάνω στην έκδοση JavaScript |
+| [`android/`](android/) | Η εφαρμογή Android (το ρολόι σε Trusted Web Activity) και το widget της για την αρχική οθόνη |
 | [`tests/clock/`](tests/clock/) | Έλεγχοι για την εφαρμογή του ρολογιού: τα αρχεία της και μια δοκιμή σε περιηγητή |
 | [`tests/api/`](tests/api/) | Δοκιμές για το web API |
 

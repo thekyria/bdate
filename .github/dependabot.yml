@@ -26,3 +26,12 @@ updates:
     groups:
       clock-tests:
         patterns: ["*"]
+
+  # The Android app and widget.
+  - package-ecosystem: gradle
+    directory: /android
+    schedule:
+      interval: monthly
+    groups:
+      android:
+        patterns: ["*"]

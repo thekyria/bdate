@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Βυζαντινό Ρολόι</string>
+    <string name="launcher_name">Βυζαντινό</string>
+    <string name="widget_name">Βυζαντινή ώρα</string>
+    <string name="widget_description">Η καιρική ώρα, η ιουλιανή ημερομηνία και το έτος για έναν τόπο, από το bdate.app.</string>
+    <string name="choose_place">Τόπος</string>
+    <string name="waiting">Αναμονή για το bdate.app…</string>
+    <string name="preview_hour">6η ώρα της ημέρας</string>
+    <string name="preview_day">Κυριακή, 5 Οκτωβρίου</string>
+    <string name="preview_year">7535 από κτίσεως κόσμου · ινδικτιώνα 5</string>
+    <string name="preview_place">Κωνσταντινούπολη</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The clock's palette (docs/clock/index.html). -->
+<resources>
+    <color name="theme">#2b1830</color>
+    <color name="icon_background">#2b1830</color>
+    <color name="widget_background">#f3f0f4</color>
+    <color name="widget_text">#2b1830</color>
+    <color name="widget_text_dim">#5e4f63</color>
+    <color name="widget_accent">#8a6417</color>
+</resources>

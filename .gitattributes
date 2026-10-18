@@ -1,6 +1,9 @@
 * text=auto eol=lf
 
 *.png binary
+*.jar binary
+# Windows scripts keep Windows line endings.
+*.bat text eol=crlf
 
 # Generated files: collapsed in diffs.
 python/uv.lock linguist-generated=true
