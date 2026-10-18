@@ -68,6 +68,22 @@ class SeasonalHourTests(unittest.TestCase):
         self.assertEqual(sset.tzinfo, timezone.utc)
         self.assertLess(rise, sset)
 
+    def test_periods_fit_every_longitude(self):
+        # At 40°N a day or night lasts 8.5 to 15.5 hours, whichever UTC date the
+        # local one straddles; the next period starts where this one ends.
+        start = datetime(2026, 1, 1, tzinfo=timezone.utc)
+        for lon in range(-180, 181, 15):
+            for step in range(0, 366 * 24, 23):
+                now = start + timedelta(hours=step)
+                s = bdate.seasonal_hour(now, 40.0, lon)
+                begin, end = datetime.fromisoformat(s.start), datetime.fromisoformat(s.end)
+                self.assertTrue(begin <= now < end + timedelta(minutes=1), (lon, now, s))
+                hours = (end - begin) / timedelta(hours=1)
+                self.assertTrue(8.5 <= hours <= 15.5, (lon, now, s))
+                after = bdate.seasonal_hour(end + timedelta(minutes=1), 40.0, lon)
+                self.assertNotEqual(after.period, s.period, (lon, now, s))
+                self.assertEqual(after.start, s.end, (lon, now, s))
+
     def test_hour_is_between_1_and_12(self):
         start = datetime(2026, 3, 20, 0, 0, tzinfo=timezone.utc)
         for offset in range(0, 24):

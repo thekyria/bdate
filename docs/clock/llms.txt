@@ -11,6 +11,7 @@ Sunrise and sunset, which set the seasonal hours, are approximate (within a few 
 ## API
 
 - [GET /api/v1/date](https://bdate.app/api/v1/date): returns the reckoning as JSON (`gregorian`, `julian_year`, `julian_month`, `julian_day`, `month_name`, `weekday`, `anno_mundi`, `indiction`, `seasonal`), plus `text` (one-line form) and the `lat`/`lon` used. Optional parameters: `date` (ISO-8601, Gregorian; default now), `tz` (IANA time zone), `lat`, `lon` (default Constantinople), `hours=0` to skip the seasonal hour. Example: https://bdate.app/api/v1/date?date=1453-05-29T05:30&tz=Europe/Istanbul
+- [GET /api/v1/schedule](https://bdate.app/api/v1/schedule): the same reckoning over a stretch of time, for widgets: `{from, to, lat, lon, segments}`, where each segment has `from`, `to` and the `/api/v1/date` fields (without `gregorian`, `lat`, `lon`) that hold in between. Takes the `/api/v1/date` parameters plus `span` (hours from `date`, 1 to 168, default 24). Example: https://bdate.app/api/v1/schedule?tz=Europe/Athens&lat=37.98&lon=23.73
 
 ## Docs
 

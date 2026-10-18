@@ -101,8 +101,9 @@ ZENITH_OFFICIAL = 90.833
 
 
 def _sun_event_utc(d: date, lat: float, lon: float, rising: bool) -> float | None:
-    """Return the UTC hour (0-24 float) of sunrise/sunset, or None if the sun
-    never rises/sets on that date at that latitude."""
+    """Return the sunrise/sunset of day d at longitude lon, in hours from 00:00
+    UTC on d (below 0 or above 24 when the local day straddles a UTC date), or
+    None if the sun never rises/sets that day at that latitude."""
     n = d.timetuple().tm_yday
     lng_hour = lon / 15.0
     t = n + ((6 if rising else 18) - lng_hour) / 24.0
@@ -130,12 +131,16 @@ def _sun_event_utc(d: date, lat: float, lon: float, rising: bool) -> float | Non
         H = 360.0 - H
     H /= 15.0
 
+    # Local mean time, kept in the morning (sunrise) or evening (sunset) of
+    # day d. Wrapping the UTC hour instead could land on the wrong day.
     T = H + RA - 0.06571 * t - 6.622
-    return (T - lng_hour) % 24.0
+    T = (T + 6) % 24.0 - 6 if rising else (T - 6) % 24.0 + 6
+    return T - lng_hour
 
 
 def sun_events(d: date, lat: float, lon: float) -> tuple[datetime | None, datetime | None]:
-    """(sunrise, sunset) as tz-aware UTC datetimes for calendar date d."""
+    """(sunrise, sunset) as tz-aware UTC datetimes for day d at longitude lon
+    (local mean time), so either may fall on the UTC date before or after d."""
 
     def to_dt(h: float | None) -> datetime | None:
         if h is None:
@@ -158,33 +163,25 @@ class SeasonalHour:
 def seasonal_hour(now: datetime, lat: float, lon: float) -> SeasonalHour | None:
     """Compute the unequal hour at `now` (tz-aware). None in polar day/night."""
     now_utc = now.astimezone(timezone.utc)
-    today = now_utc.date()
+    # The day at this longitude (local mean time), not the UTC date.
+    today = (now_utc + timedelta(hours=lon / 15.0)).date()
     rise, sset = sun_events(today, lat, lon)
     if rise is None or sset is None:
         return None
 
-    # The almanac gives events for the UTC calendar date; for eastern
-    # longitudes the "sunset" may belong to the previous local day etc.
-    # We normalise by picking the sunrise/sunset pair that brackets `now`.
-    if sset < rise:  # sunset computed is for before this sunrise; shift it a day
-        sset += timedelta(days=1)
-
-    if rise <= now_utc < sset:
-        start, end, period = rise, sset, "day"
-    elif now_utc >= sset:
-        nrise, _ = sun_events(today + timedelta(days=1), lat, lon)
-        if nrise is None:
-            return None
-        if nrise < sset:
-            nrise += timedelta(days=1)
-        start, end, period = sset, nrise, "night"
-    else:  # before sunrise
-        _, pset = sun_events(today - timedelta(days=1), lat, lon)
-        if pset is None:
-            return None
-        if pset > rise:
-            pset -= timedelta(days=1)
-        start, end, period = pset, rise, "night"
+    # Sunrises and sunsets from the day before to the day after, in order;
+    # the pair around `now` is the day or night it falls in.
+    events = []
+    for d in (today - timedelta(days=1), today, today + timedelta(days=1)):
+        r, s = sun_events(d, lat, lon)
+        events += [(t, kind) for t, kind in ((r, "rise"), (s, "set")) if t is not None]
+    events.sort()
+    before = [e for e in events if e[0] <= now_utc]
+    after = [e for e in events if e[0] > now_utc]
+    if not before or not after or before[-1][1] == after[0][1]:
+        return None
+    (start, kind), (end, _) = before[-1], after[0]
+    period = "day" if kind == "rise" else "night"
 
     frac = (now_utc - start) / (end - start)
     hour = min(12, int(frac * 12) + 1)

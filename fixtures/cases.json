@@ -525,13 +525,13 @@
       "indiction": 4,
       "seasonal": {
         "period": "night",
-        "hour": 10,
-        "watch": 4,
-        "start": "2026-07-03T20:30-04:00",
+        "hour": 4,
+        "watch": 2,
+        "start": "2026-07-04T20:30-04:00",
         "end": "2026-07-05T05:30-04:00"
       }
     },
-    "formatted": "Sabbaton, 21 Iounios 7534 AM (Julian 2026-06-21), indiction 4, 10th hour of the night (4th watch)"
+    "formatted": "Sabbaton, 21 Iounios 7534 AM (Julian 2026-06-21), indiction 4, 4th hour of the night (2nd watch)"
   },
   {
     "input": {
@@ -550,14 +550,14 @@
       "anno_mundi": 7534,
       "indiction": 4,
       "seasonal": {
-        "period": "night",
+        "period": "day",
         "hour": 7,
-        "watch": 3,
-        "start": "2026-06-20T16:53+10:00",
-        "end": "2026-06-22T06:59+10:00"
+        "watch": null,
+        "start": "2026-06-21T06:59+10:00",
+        "end": "2026-06-21T16:53+10:00"
       }
     },
-    "formatted": "Kyriakē, 8 Iounios 7534 AM (Julian 2026-06-08), indiction 4, 7th hour of the night (3rd watch)"
+    "formatted": "Kyriakē, 8 Iounios 7534 AM (Julian 2026-06-08), indiction 4, 7th hour of the day"
   },
   {
     "input": {
