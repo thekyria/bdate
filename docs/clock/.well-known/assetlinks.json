@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "app.bdate",
+      "sha256_cert_fingerprints": [
+        "B1:2F:3D:7F:9B:9F:CD:14:A2:1F:90:40:A2:DE:B4:D6:5F:A0:F0:75:2E:CC:1F:F9:E9:95:7A:0F:CE:FB:0A:2A"
+      ]
+    }
+  }
+]
