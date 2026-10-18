@@ -5,7 +5,7 @@ description = "date(1), but in Byzantine reckoning: Anno Mundi, indiction, Julia
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = []
 classifiers = [
     "Environment :: Console",
@@ -18,8 +18,7 @@ bdate = "bdate:main"
 
 [dependency-groups]
 dev = [
-    # Tests run on 3.10+ only; pytest 9 dropped 3.9, and older pytest has a known advisory.
-    "pytest>=9.0.3; python_version >= '3.10'",
+    "pytest>=9.0.3",
     "ruff>=0.17.0",
 ]
 

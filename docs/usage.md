@@ -9,7 +9,7 @@ description: "Install and use bdate: the command-line options, JSON output, choo
 
 ## Install
 
-`bdate` needs only the standard library and Python 3.9 or later.
+`bdate` needs only the standard library and Python 3.10 or later.
 
 From a checkout of the repository (the Python package lives in `python/`):
 

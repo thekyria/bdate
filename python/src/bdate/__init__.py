@@ -9,7 +9,7 @@ Layers implemented:
     plus the 4 night watches. Sunrise/sunset are computed with a simple
     almanac algorithm, so treat them as approximate (+/- a few minutes).
 
-Stdlib only. Python >= 3.9.
+Stdlib only. Python >= 3.10.
 """
 
 from __future__ import annotations
