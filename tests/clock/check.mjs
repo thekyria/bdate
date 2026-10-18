@@ -105,6 +105,16 @@ await check("manifest has what browsers need to install the app", () => {
   assert.ok(m.icons.some((i) => i.purpose === "maskable"), "no maskable icon");
 });
 
+await check("assetlinks.json lets the Android app (android/) open bdate.app full screen", () => {
+  const links = JSON.parse(readFileSync(join(site, ".well-known/assetlinks.json"), "utf8"));
+  const app = readFileSync(join(ROOT, "android/app/build.gradle.kts"), "utf8").match(/applicationId = "([^"]+)"/)[1];
+  const target = links.find((l) => l.relation.includes("delegate_permission/common.handle_all_urls"))?.target;
+  assert.equal(target?.namespace, "android_app");
+  assert.equal(target.package_name, app, "package_name is the app's applicationId");
+  assert.ok(target.sha256_cert_fingerprints.length > 0);
+  for (const f of target.sha256_cert_fingerprints) assert.match(f, /^([0-9A-F]{2}:){31}[0-9A-F]{2}$/, "SHA-256, upper-case hex pairs");
+});
+
 await check("files linked from the page and cached by sw.js exist", () => {
   const html = readFileSync(join(site, "index.html"), "utf8");
   const linked = [...html.matchAll(/<link[^>]+href="([^"]+)"/g)].map((m) => m[1]).filter((h) => !/^https?:/.test(h));

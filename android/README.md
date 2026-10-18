@@ -62,7 +62,7 @@ for the app's signing key. To set that up, once:
    it.
 
 3. Put the key's SHA-256 fingerprint (`keytool -list -v -keystore bdate.jks`)
-   in `docs/clock/.well-known/assetlinks.json`:
+   in `docs/clock/.well-known/assetlinks.json` (done for the current key):
 
    ```json
    [{
