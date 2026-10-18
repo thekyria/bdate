@@ -1,0 +1,65 @@
+name: Android
+
+# Every branch, so a branch's APK can be tried before it is merged; the
+# pushes behind a pull request run here too.
+on:
+  push:
+    paths: ["android/**", ".github/workflows/android.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: android
+
+jobs:
+  build:
+    name: Build the app and widget
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Unit tests and lint
+        run: ./gradlew --no-daemon testDebugUnitTest lintDebug
+
+      # Signed with the release key when the repository has it (see
+      # android/README.md), so one install can be updated by the next;
+      # otherwise a debug build with this run's throwaway key.
+      - name: Build the APK
+        env:
+          KEYSTORE_BASE64: ${{ secrets.BDATE_KEYSTORE_BASE64 }}
+          BDATE_KEYSTORE_PASSWORD: ${{ secrets.BDATE_KEYSTORE_PASSWORD }}
+          BDATE_KEY_ALIAS: ${{ secrets.BDATE_KEY_ALIAS }}
+          BDATE_KEY_PASSWORD: ${{ secrets.BDATE_KEY_PASSWORD }}
+        run: |
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/bdate.jks"
+            BDATE_KEYSTORE="$RUNNER_TEMP/bdate.jks" ./gradlew --no-daemon assembleRelease
+            cp app/build/outputs/apk/release/app-release.apk bdate.apk
+          else
+            ./gradlew --no-daemon assembleDebug
+            cp app/build/outputs/apk/debug/app-debug.apk bdate.apk
+          fi
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: bdate-apk
+          path: android/bdate.apk
+
+      - name: Lint report
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: lint-report
+          path: android/app/build/reports/lint-results-debug.html
+          if-no-files-found: ignore

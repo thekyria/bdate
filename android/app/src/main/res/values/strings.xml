@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Byzantine Clock</string>
+    <string name="launcher_name">Byzantine</string>
+    <string name="widget_name">Byzantine hour</string>
+    <string name="widget_description">The seasonal hour, Julian date and year for a place, from bdate.app.</string>
+    <string name="choose_place">Place</string>
+    <string name="waiting">Waiting for bdate.app…</string>
+    <string name="preview_hour">6th hour of the day</string>
+    <string name="preview_day">Kyriakē, 5 Oktōbrios</string>
+    <string name="preview_year">7535 Anno Mundi · indiction 5</string>
+    <string name="preview_place">Constantinople</string>
+    <string name="asset_statements" translatable="false">[{\"relation\": [\"delegate_permission/common.handle_all_urls\"], \"target\": {\"namespace\": \"web\", \"site\": \"https://bdate.app\"}}]</string>
+</resources>

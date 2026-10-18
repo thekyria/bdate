@@ -1,0 +1,141 @@
+{
+  "from": "2026-10-18T21:00:00+03:00",
+  "to": "2026-10-19T03:19:22+03:00",
+  "lat": 37.972,
+  "lon": 23.727,
+  "segments": [
+    {
+      "from": "2026-10-18T21:00:00+03:00",
+      "to": "2026-10-18T21:57:18+03:00",
+      "julian_year": 2026,
+      "julian_month": 10,
+      "julian_day": 5,
+      "month_name": "Oktōbrios",
+      "weekday": "Kyriakē",
+      "anno_mundi": 7535,
+      "indiction": 5,
+      "seasonal": {
+        "period": "night",
+        "hour": 3,
+        "watch": 1,
+        "start": "2026-10-18T18:44+03:00",
+        "end": "2026-10-19T07:37+03:00"
+      },
+      "text": "Kyriakē, 5 Oktōbrios 7535 AM (Julian 2026-10-05), indiction 5, 3rd hour of the night (1st watch)"
+    },
+    {
+      "from": "2026-10-18T21:57:18+03:00",
+      "to": "2026-10-18T23:01:43+03:00",
+      "julian_year": 2026,
+      "julian_month": 10,
+      "julian_day": 5,
+      "month_name": "Oktōbrios",
+      "weekday": "Kyriakē",
+      "anno_mundi": 7535,
+      "indiction": 5,
+      "seasonal": {
+        "period": "night",
+        "hour": 4,
+        "watch": 2,
+        "start": "2026-10-18T18:44+03:00",
+        "end": "2026-10-19T07:37+03:00"
+      },
+      "text": "Kyriakē, 5 Oktōbrios 7535 AM (Julian 2026-10-05), indiction 5, 4th hour of the night (2nd watch)"
+    },
+    {
+      "from": "2026-10-18T23:01:43+03:00",
+      "to": "2026-10-19T00:00:00+03:00",
+      "julian_year": 2026,
+      "julian_month": 10,
+      "julian_day": 5,
+      "month_name": "Oktōbrios",
+      "weekday": "Kyriakē",
+      "anno_mundi": 7535,
+      "indiction": 5,
+      "seasonal": {
+        "period": "night",
+        "hour": 5,
+        "watch": 2,
+        "start": "2026-10-18T18:44+03:00",
+        "end": "2026-10-19T07:37+03:00"
+      },
+      "text": "Kyriakē, 5 Oktōbrios 7535 AM (Julian 2026-10-05), indiction 5, 5th hour of the night (2nd watch)"
+    },
+    {
+      "from": "2026-10-19T00:00:00+03:00",
+      "to": "2026-10-19T00:06:07+03:00",
+      "julian_year": 2026,
+      "julian_month": 10,
+      "julian_day": 6,
+      "month_name": "Oktōbrios",
+      "weekday": "Deutera",
+      "anno_mundi": 7535,
+      "indiction": 5,
+      "seasonal": {
+        "period": "night",
+        "hour": 5,
+        "watch": 2,
+        "start": "2026-10-18T18:44+03:00",
+        "end": "2026-10-19T07:37+03:00"
+      },
+      "text": "Deutera, 6 Oktōbrios 7535 AM (Julian 2026-10-06), indiction 5, 5th hour of the night (2nd watch)"
+    },
+    {
+      "from": "2026-10-19T00:06:07+03:00",
+      "to": "2026-10-19T01:10:32+03:00",
+      "julian_year": 2026,
+      "julian_month": 10,
+      "julian_day": 6,
+      "month_name": "Oktōbrios",
+      "weekday": "Deutera",
+      "anno_mundi": 7535,
+      "indiction": 5,
+      "seasonal": {
+        "period": "night",
+        "hour": 6,
+        "watch": 2,
+        "start": "2026-10-18T18:44+03:00",
+        "end": "2026-10-19T07:37+03:00"
+      },
+      "text": "Deutera, 6 Oktōbrios 7535 AM (Julian 2026-10-06), indiction 5, 6th hour of the night (2nd watch)"
+    },
+    {
+      "from": "2026-10-19T01:10:32+03:00",
+      "to": "2026-10-19T02:14:57+03:00",
+      "julian_year": 2026,
+      "julian_month": 10,
+      "julian_day": 6,
+      "month_name": "Oktōbrios",
+      "weekday": "Deutera",
+      "anno_mundi": 7535,
+      "indiction": 5,
+      "seasonal": {
+        "period": "night",
+        "hour": 7,
+        "watch": 3,
+        "start": "2026-10-18T18:44+03:00",
+        "end": "2026-10-19T07:37+03:00"
+      },
+      "text": "Deutera, 6 Oktōbrios 7535 AM (Julian 2026-10-06), indiction 5, 7th hour of the night (3rd watch)"
+    },
+    {
+      "from": "2026-10-19T02:14:57+03:00",
+      "to": "2026-10-19T03:19:22+03:00",
+      "julian_year": 2026,
+      "julian_month": 10,
+      "julian_day": 6,
+      "month_name": "Oktōbrios",
+      "weekday": "Deutera",
+      "anno_mundi": 7535,
+      "indiction": 5,
+      "seasonal": {
+        "period": "night",
+        "hour": 8,
+        "watch": 3,
+        "start": "2026-10-18T18:44+03:00",
+        "end": "2026-10-19T07:37+03:00"
+      },
+      "text": "Deutera, 6 Oktōbrios 7535 AM (Julian 2026-10-06), indiction 5, 8th hour of the night (3rd watch)"
+    }
+  ]
+}
