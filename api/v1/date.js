@@ -33,7 +33,7 @@ function number(value, name, limit) {
   return n;
 }
 
-/** Turns query parameters into the arguments for byzantine(); throws on bad input. */
+/** Turns query parameters into the arguments for byzantine(), plus the `tz` name; throws on bad input. */
 export function parse(query) {
   const one = (k) => (Array.isArray(query[k]) ? query[k][0] : query[k]);
   const tz = one("tz") || null;
@@ -69,7 +69,7 @@ export function parse(query) {
   const lat = number(one("lat"), "lat", 90) ?? DEFAULT_LAT;
   const lon = number(one("lon"), "lon", 180) ?? DEFAULT_LON;
   const withHours = !["0", "false"].includes(String(one("hours")).toLowerCase());
-  return { now, lat, lon, withHours, tzOffset };
+  return { now, lat, lon, withHours, tzOffset, tz };
 }
 
 export default function handler(req, res) {

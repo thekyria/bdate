@@ -36,7 +36,7 @@ bdate --json
 
 ## Install / run
 
-Stdlib only, Python ≥ 3.9. Packaged with [uv](https://docs.astral.sh/uv/).
+Stdlib only, Python ≥ 3.10. Packaged with [uv](https://docs.astral.sh/uv/).
 Commands below run from this `python/` directory.
 
 ```
