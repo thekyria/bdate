@@ -1,0 +1,31 @@
+name: Secret scanning
+
+# Scans the full history for committed secrets (OSPS-BR-07.01).
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  schedule:
+    - cron: "17 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  gitleaks:
+    name: Gitleaks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Same version as the hook in .pre-commit-config.yaml.
+          GITLEAKS_VERSION: "8.28.0"
+          GITLEAKS_ENABLE_COMMENTS: "false"

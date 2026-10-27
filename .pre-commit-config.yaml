@@ -1,0 +1,19 @@
+# Set up once with `pre-commit install`; CI runs the same checks
+# (.github/workflows/gitleaks.yml and binary-artifacts.yml).
+repos:
+  # Secret scanning (OSPS-BR-07.01)
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.28.0
+    hooks:
+      - id: gitleaks
+
+  # No binary files (OSPS-QA-05.01 / OSPS-QA-05.02). The exceptions match
+  # .github/workflows/binary-artifacts.yml.
+  - repo: local
+    hooks:
+      - id: no-binary-files
+        name: forbid binary files
+        language: fail
+        entry: "Binary files are not allowed in this repository"
+        types: [binary]
+        exclude: ^(docs/clock/icons/[^/]+\.png|docs/clock/social-image\.png|android/gradle/wrapper/gradle-wrapper\.jar)$
