@@ -44,6 +44,9 @@ command line and the API print the names in romanised form.
 | [`tests/clock/`](tests/clock/) | Checks for the clock app: its files and a browser smoke test |
 | [`tests/api/`](tests/api/) | Tests for the web API |
 
+These are all parts of one project, released and versioned together; there
+are no subprojects or other repositories.
+
 Python is the source of truth. After changing the logic there, regenerate the
 fixtures (`cd python && uv run python scripts/gen_fixtures.py`). The Python
 tests fail while the fixtures are stale, and the JS tests fail until the port
@@ -62,5 +65,12 @@ cd tests/clock && npm ci && npx playwright install chromium && npm test   # cloc
 import { byzantine, formatDefault } from "./js/src/bdate.js";
 formatDefault(byzantine(new Date(), { lat: 37.98, lon: 23.73 }));
 ```
+
+## Contributing and security
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to report a bug or send a
+change, and [SECURITY.md](SECURITY.md) for reporting a vulnerability
+privately. The pre-commit hooks (`pre-commit install`) scan for secrets
+(gitleaks) and reject binary files; CI runs the same checks.
 
 MIT licensed.
