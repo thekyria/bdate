@@ -15,7 +15,7 @@ jobs:
     name: No binary files in repository
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       # Allowed: the clock app's PNG icons and social image (the web app
       # manifest and link previews need PNGs), and the Gradle wrapper jar,
@@ -35,4 +35,4 @@ jobs:
           echo "No binary files tracked besides the allowed ones."
 
       - name: Gradle wrapper is an official release
-        uses: gradle/actions/wrapper-validation@v6
+        uses: gradle/actions/wrapper-validation@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1

@@ -27,5 +27,6 @@ maintainer directly.
   pre-commit hook and in CI over the full history.
 - No binary files in the repository besides the clock's icons and the Gradle
   wrapper jar, which CI checks against Gradle's published checksums.
+- GitHub Actions are pinned by commit SHA.
 - Dependabot keeps the GitHub Actions and the dev and Android dependencies
   up to date.
