@@ -95,6 +95,11 @@ test("defaults to the next 24 hours from now", () => {
   assert.deepEqual([body.lat, body.lon], [41.0086, 28.9802]);
 });
 
+test("an explicit date is cacheable; errors are not", () => {
+  assert.equal(call(schedule, { date: "2026-10-18T10:00" }).headers["Cache-Control"], "public, s-maxage=86400");
+  assert.equal(call(schedule, { date: "2026-10-18T10:00", span: "0" }).headers["Cache-Control"], "no-store");
+});
+
 test("bad input is a 400 with a message", () => {
   for (const query of [{ span: "0" }, { span: "169" }, { span: "abc" }, { lat: "91" }, { tz: "Mars/Olympus" }]) {
     const { status, body } = call(schedule, query);

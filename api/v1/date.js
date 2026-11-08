@@ -12,6 +12,10 @@
 //
 // The response is `bdate --json`'s object plus `text` (the one-line form)
 // and the `lat`/`lon` used. Errors are 400 with {"error": "..."}.
+//
+// Caching: with an explicit `date` the answer never changes, so Vercel's CDN
+// may keep it for a day (each deploy starts with an empty cache). Without
+// one the answer is "now" and is never cached.
 
 import { byzantine, formatDefault, DEFAULT_LAT, DEFAULT_LON } from "../../js/src/bdate.js";
 
@@ -72,6 +76,12 @@ export function parse(query) {
   return { now, lat, lon, withHours, tzOffset, tz };
 }
 
+/** Cache-Control for a successful response: cacheable only for an explicit `date`. */
+export function cacheControl(query) {
+  const date = Array.isArray(query.date) ? query.date[0] : query.date;
+  return date ? "public, s-maxage=86400" : "no-store";
+}
+
 export default function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Cache-Control", "no-store");
@@ -87,6 +97,7 @@ export default function handler(req, res) {
     return res.status(400).json({ error: err.message });
   }
   const { now, lat, lon, withHours, tzOffset } = args;
+  res.setHeader("Cache-Control", cacheControl(req.query || {}));
   const b = byzantine(now, { lat, lon, withHours, tzOffset });
   return res.status(200).json({ ...b, text: formatDefault(b), lat, lon });
 }

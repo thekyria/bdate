@@ -42,6 +42,11 @@ test("defaults to now, at Constantinople, in UTC", () => {
   assert.deepEqual([body.lat, body.lon], [41.0086, 28.9802]);
 });
 
+test("an explicit date is cacheable; errors are not", () => {
+  assert.equal(call({ date: "1453-05-29T05:30" }).headers["Cache-Control"], "public, s-maxage=86400");
+  assert.equal(call({ date: "not a date" }).headers["Cache-Control"], "no-store");
+});
+
 test("a date without an offset is read in tz", () => {
   const { body } = call({ date: "2026-07-01T09:30", tz: "Europe/Athens" });
   assert.equal(body.gregorian, "2026-07-01T09:30:00+03:00");

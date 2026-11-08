@@ -14,10 +14,11 @@
 // starts whenever those fields change: at each seasonal-hour boundary, at
 // local midnight, and when tz changes its offset. Times are ISO-8601 to the
 // second; the first segment starts at `date` and the last one ends at or after
-// `date` + span. Errors are 400 with {"error": "..."}.
+// `date` + span. Errors are 400 with {"error": "..."}. Responses for an
+// explicit `date` are cached like /api/v1/date's.
 
 import { byzantine, formatDefault, periodBounds, sunEvents } from "../../js/src/bdate.js";
-import { offsetMinutes, parse } from "./date.js";
+import { cacheControl, offsetMinutes, parse } from "./date.js";
 
 const DAY_MS = 86400000;
 const HOUR_MS = 3600000;
@@ -93,6 +94,7 @@ export default function handler(req, res) {
     return res.status(400).json({ error: err.message });
   }
   const { now, lat, lon, withHours, tzOffset, tz } = args;
+  res.setHeader("Cache-Control", cacheControl(query));
   const offsetAt = tz ? (ms) => offsetMinutes(new Date(ms), tz) : () => tzOffset;
   // The same ISO form as `gregorian` in /api/v1/date.
   const iso = (ms) => byzantine(new Date(ms), { withHours: false, tzOffset: offsetAt(ms) }).gregorian;
